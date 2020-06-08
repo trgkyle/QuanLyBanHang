@@ -1,0 +1,244 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package View;
+
+import DAO.TaiKhoanDAO;
+import Model.TaiKhoan;
+import java.awt.Component;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import javax.swing.JRootPane;
+import javax.swing.SwingUtilities;
+
+/**
+ *
+ * @author quang
+ */
+public class DangNhap extends javax.swing.JFrame {
+
+    /**
+     * Creates new form DangNhap
+     */
+    
+    
+    public static TaiKhoan taiKhoan;
+    
+    private TaiKhoanDAO taiKhoanDAO;
+    
+    private Component rootComponent = this;
+    
+    private void prepareUI(){
+    
+        btnThoat.addActionListener(btnThoat_Click());
+        btnDangNhap.addActionListener(btnDangNhap_Click());
+        // set button mặc định khi nhấn enter
+        JRootPane rootPane = SwingUtilities.getRootPane(rootComponent);
+        rootPane.setDefaultButton(btnDangNhap);
+    }
+    
+    
+    /**
+     * Sự kiện button thoát
+     *
+     * @return
+     */
+    private ActionListener btnThoat_Click() {
+        return new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                
+                //  dialog xác nhận thoát
+                int reply = JOptionPane.showConfirmDialog(null, "Bạn có muốn thoát chương trình không ?", "Thoát", JOptionPane.YES_NO_OPTION);
+
+                // nếu người dùng đồng ý
+                if (reply == JOptionPane.YES_OPTION) {
+                    try {
+                        System.exit(0);
+                    } catch (Exception e1) {
+                        JOptionPane.showMessageDialog(rootComponent, e1);
+                    }
+                }
+            }
+        };
+    }
+
+
+    /**
+     * Sự kiện button đăng nhập
+     *
+     * @return
+     */
+    private ActionListener btnDangNhap_Click() {
+        return new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // lấy tên đăng nhập và mật khẩu
+                String tenTaiKhoan = txtTenNguoiDung.getText().trim();
+                String matKhau = String.valueOf(txtMatKhau.getText().trim());
+
+                // kiểm tra dữ liệu
+                if (tenTaiKhoan.isEmpty()) {
+                    JOptionPane.showMessageDialog(rootComponent, "Vui lòng nhập tên người dùng");
+                    return;
+                } else if (matKhau.isEmpty()) {
+                    JOptionPane.showMessageDialog(rootComponent, "Vui lòng nhập mật khẩu");
+                    return;
+                }
+
+                // lấy tài khoản từ db lên
+                try {
+                    taiKhoan = taiKhoanDAO.getTaiKhoan(tenTaiKhoan);
+                } catch (Exception e1) {
+                    JOptionPane.showMessageDialog(rootComponent, e1);
+                    return;
+                }
+
+                // kiểm tra username, password có đúng không
+                // nếu đúng thì vào form quản lý
+                // nếu sai thì thông báo
+                
+                if (tenTaiKhoan.equals(taiKhoan.getTenTaiKhoan()) && matKhau.equals(taiKhoan.getMatKhau())) {
+                    
+                    rootComponent.setVisible(false);
+                    try {
+                        new Admin().setVisible(true);
+                    } catch (Exception ex) {
+                        Logger.getLogger(DangNhap.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                } else {
+                    JOptionPane.showMessageDialog(rootComponent, "Sai tên đăng nhập hoặc mật khẩu");
+                    txtTenNguoiDung.requestFocus();
+                    txtTenNguoiDung.selectAll();
+                }
+            }
+        };
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    public DangNhap() {
+        initComponents();
+         // kết nối đến DB
+        try {
+            taiKhoanDAO = TaiKhoanDAO.getInstance();
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(rootComponent, e);
+            System.exit(1);
+        }
+
+        
+
+        // hiển thị form
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                prepareUI();
+
+                //setUndecorated(true);
+                setSize(447, 335);
+                setDefaultCloseOperation(EXIT_ON_CLOSE);
+                setResizable(false);
+                setLocationRelativeTo(null);
+                setTitle("Đăng nhập");
+                setVisible(true);
+            }
+        });
+    }
+
+    /**
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
+     */
+    @SuppressWarnings("unchecked")
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
+    private void initComponents() {
+
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        txtTenNguoiDung = new javax.swing.JTextField();
+        btnDangNhap = new javax.swing.JButton();
+        btnThoat = new javax.swing.JButton();
+        txtMatKhau = new javax.swing.JPasswordField();
+
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        jLabel1.setText("Tài Khoản");
+
+        jLabel2.setText("Mật Khẩu");
+
+        btnDangNhap.setText("Đăng Nhập");
+
+        btnThoat.setText("Thoát");
+
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(80, 80, 80)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(btnDangNhap, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnThoat, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(0, 10, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(txtTenNguoiDung, javax.swing.GroupLayout.DEFAULT_SIZE, 199, Short.MAX_VALUE)
+                            .addComponent(txtMatKhau))))
+                .addGap(79, 79, 79))
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(55, 55, 55)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1)
+                    .addComponent(txtTenNguoiDung, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(41, 41, 41)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel2)
+                    .addComponent(txtMatKhau, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 69, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnDangNhap)
+                    .addComponent(btnThoat))
+                .addGap(67, 67, 67))
+        );
+
+        pack();
+    }// </editor-fold>//GEN-END:initComponents
+
+    /**
+     * @param args the command line arguments
+     */
+
+
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnDangNhap;
+    private javax.swing.JButton btnThoat;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JPasswordField txtMatKhau;
+    private javax.swing.JTextField txtTenNguoiDung;
+    // End of variables declaration//GEN-END:variables
+}
