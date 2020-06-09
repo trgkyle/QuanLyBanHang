@@ -67,11 +67,11 @@ public class QuanLyChoThueTab extends javax.swing.JPanel {
         
         
         btnXoa.addActionListener(btnXoa_Click());
-       // btnXoa.setEnabled(false);
+        btnXoa.setEnabled(false);
           
           
         btnThanhToan.addActionListener(btnThanhToan_Click());
-        //btnThanhToan.setEnabled(false);
+       // btnThanhToan.setEnabled(false);
             
             
         cbFilter.addActionListener(cbFilter_Selected());
@@ -116,16 +116,26 @@ public class QuanLyChoThueTab extends javax.swing.JPanel {
         }
 
         // kiểm tra mặt hàng
-        else if (!hoaDon.getMatHang().isTinhTrang()) {
+        if (!hoaDon.getMatHang().isTinhTrang()) {
             JOptionPane.showMessageDialog(rootComponent, "Mặt Hàng không còn sử dụng được");
             
             return false;
-        }else{
+        }
 
-        
+//        // kiểm tra người dùng có mượn quá hạn không
+//        for (HoaDon hoaDon1 : danhSachChoThue.getAll()) {
+//            if (hoaDon1.getKhachHang().getMaKH().equals(
+//                    hoaDon.getKhachHang().getMaKH())) {
+//                if (!hoaDon1.isThueQuaHan()) {
+//                    JOptionPane.showMessageDialog(rootComponent,
+//                            "Khách hàng thuê mặt hàng quá hạn\nVui lòng nhắc khách hàng trả mặt hàng trước khi thuê");
+//                    
+//                    return false;
+//                }
+//            }
+//        }
 
         return true;
-        }
     }
     
     
@@ -223,11 +233,11 @@ public class QuanLyChoThueTab extends javax.swing.JPanel {
         }
 
         if (rowSelected == -1) {
-//            btnSua.setToolTipText("Vui lòng chọn hoá đơn cần cập nhật thông tin");
-//            btnSua.setEnabled(false);
-//
-//            btnXoa.setToolTipText("Vui lòng chọn hoá đơn cần xoá");
-//            btnXoa.setEnabled(false);
+            btnSua.setToolTipText("Vui lòng chọn hoá đơn cần cập nhật thông tin");
+            btnSua.setEnabled(false);
+
+            btnXoa.setToolTipText("Vui lòng chọn hoá đơn cần xoá");
+            btnXoa.setEnabled(false);
 
             btnThanhToan.setToolTipText("Vui lòng chọn hoá đơn cần thanh toán");
             btnThanhToan.setEnabled(false);
@@ -238,15 +248,15 @@ public class QuanLyChoThueTab extends javax.swing.JPanel {
             btnXoa.setToolTipText("[Alt + X] Xoá hoá đơn");
             btnXoa.setEnabled(true);
 
-            if (String.valueOf(tblChoThue.getModel().getValueAt(rowSelected, 7)).equalsIgnoreCase("Đang thuê")) {
+            if (String.valueOf(tblChoThue.getModel().getValueAt(rowSelected, 6)).equalsIgnoreCase("Đang thuê")) {
                 btnThanhToan.setToolTipText("Thanh toán hoá đơn");
                 btnThanhToan.setEnabled(true);
             } else {
                 btnThanhToan.setToolTipText("Hoá đơn đã được thanh toán");
-                btnThanhToan.setEnabled(false);
+                //btnThanhToan.setEnabled(false);
 
                 btnSua.setToolTipText("Không thể cập nhật hoá đơn đã thanh toán");
-                btnSua.setEnabled(false);
+               // btnSua.setEnabled(false);
 
 //                btnXoa.setToolTipText("Không thể xoá hoá đơn đã thanh toán");
 //                btnXoa.setEnabled(false);
@@ -317,7 +327,7 @@ public class QuanLyChoThueTab extends javax.swing.JPanel {
                      JOptionPane.showMessageDialog(rootComponent,"Vui lòng chọn hoá đơn cần sửa");
                     
                     return;
-                } else if (String.valueOf(tblChoThue.getModel().getValueAt(getCurrentSelected(), 7)).equalsIgnoreCase("Đã thanh toán")) {
+                } else if (String.valueOf(tblChoThue.getModel().getValueAt(getCurrentSelected(), 6)).equalsIgnoreCase("Đã thanh toán")) {
                     JOptionPane.showMessageDialog(rootComponent,"Không thể sửa hoá đơn đã thanh toán");
                     return;
                 }
@@ -365,7 +375,7 @@ public class QuanLyChoThueTab extends javax.swing.JPanel {
                 if (getCurrentSelected() == -1) {
                     JOptionPane.showMessageDialog(rootComponent,"Vui lòng chọn hoá đơn cần xoá");
                     return;}
-//                } else if (String.valueOf(tblChoThue.getModel().getValueAt(getCurrentSelected(), 7)).equalsIgnoreCase("Đã thanh toán")) {
+//                } else if (String.valueOf(tblChoThue.getModel().getValueAt(getCurrentSelected(), 6)).equalsIgnoreCase("Đã thanh toán")) {
 //                    JOptionPane.showMessageDialog(rootComponent,"Không thể xoá hoá đơn đã thanh toán");
 //                    return;
 //                }
@@ -410,7 +420,7 @@ public class QuanLyChoThueTab extends javax.swing.JPanel {
                 if (getCurrentSelected() == -1) {
                     JOptionPane.showMessageDialog(rootComponent,"Vui lòng chọn hoá đơn cần thanh toán");
                     return;
-                }else if (String.valueOf(tblChoThue.getModel().getValueAt(getCurrentSelected(), 7)).equalsIgnoreCase("Đã thanh toán")) {
+                }else if (String.valueOf(tblChoThue.getModel().getValueAt(getCurrentSelected(), 6)).equalsIgnoreCase("Đã thanh toán")) {
                     JOptionPane.showMessageDialog(rootComponent,"Hoá đơn đã thanh toán");
                     return;
                 }
@@ -501,7 +511,7 @@ public class QuanLyChoThueTab extends javax.swing.JPanel {
                         RowFilter<Object, Object> filter = new RowFilter<Object, Object>() {
                             @Override
                             public boolean include(Entry<?, ?> entry) {
-                                return (entry.getStringValue(7).contains(filter_text));
+                                return (entry.getStringValue(6).contains(filter_text));
                             }
                         };
                         sorter.setRowFilter(filter);

@@ -12,20 +12,10 @@
     </editor-bookmarks>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/home/quang/Documents/github1/BaiTapLonJAVA_2020/project/src/Model/DanhSachChoThue.java</file>
-            <file>file:/home/quang/Documents/github1/BaiTapLonJAVA_2020/project/src/VTableModel/ChoThueTableModel.java</file>
-            <file>file:/home/quang/Documents/github1/BaiTapLonJAVA_2020/project/src/VDialog/ChoThueDialog.java</file>
-            <file>file:/home/quang/Documents/github1/BaiTapLonJAVA_2020/project/src/DAO/HoaDonDAO.java</file>
-            <file>file:/home/quang/Documents/github1/BaiTapLonJAVA_2020/project/src/View/Run.java</file>
-            <file>file:/home/quang/Documents/github1/BaiTapLonJAVA_2020/project/src/DAO/MatHangDAO.java</file>
-            <file>file:/home/quang/Documents/github1/BaiTapLonJAVA_2020/project/src/Model/DanhSachMatHang.java</file>
             <file>file:/home/quang/Documents/github1/BaiTapLonJAVA_2020/project/src/VTabbed/QuanLyChoThueTab.java</file>
-            <file>file:/home/quang/Documents/github1/BaiTapLonJAVA_2020/project/src/VTabbed/ThongKeTab.java</file>
-            <file>file:/home/quang/Documents/github1/BaiTapLonJAVA_2020/project/src/Model/HoaDon.java</file>
-            <file>file:/home/quang/Documents/github1/BaiTapLonJAVA_2020/project/src/DAO/DataBaseUtils.java</file>
-            <file>file:/home/quang/Documents/github1/BaiTapLonJAVA_2020/project/src/DAO/KhachHangDAO.java</file>
-            <file>file:/home/quang/Documents/github1/BaiTapLonJAVA_2020/project/src/DAO/NhanVienDAO.java</file>
-            <file>file:/home/quang/Documents/github1/BaiTapLonJAVA_2020/project/src/Model/ChiTietHoaDon.java</file>
+            <file>file:/home/quang/Documents/github1/BaiTapLonJAVA_2020/project/src/View/Admin.java</file>
+            <file>file:/home/quang/Documents/github1/BaiTapLonJAVA_2020/project/src/VTableModel/ChoThueTableModel.java</file>
+            <file>file:/home/quang/Documents/github1/BaiTapLonJAVA_2020/project/src/View/Run.java</file>
         </group>
     </open-files>
 </project-private>
