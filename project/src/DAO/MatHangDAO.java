@@ -63,7 +63,7 @@ public class MatHangDAO {
                         resultSet.getString("TENMH"),
                         resultSet.getString("THELOAI"),
                         resultSet.getBoolean("TINHTRANG"),
-                        resultSet.getString("HANGSANXUAT"),
+                        resultSet.getString("MANCC"),
                         resultSet.getString("GHICHU"),
                         resultSet.getDouble("DONGIA"),
                         resultSet.getInt("SOLUONGTON")
@@ -132,7 +132,7 @@ public class MatHangDAO {
                         resultSet.getString("TENMH"),
                         resultSet.getString("THELOAI"),
                         resultSet.getBoolean("TINHTRANG"),
-                        resultSet.getString("HANGSANXUAT"),
+                        resultSet.getString("MANCC"),
                         resultSet.getString("GHICHU"),
                         resultSet.getDouble("DONGIA"),
                         resultSet.getInt("SOLUONGTON")
@@ -181,7 +181,7 @@ public class MatHangDAO {
      * @throws Exception
      */
     public MatHang themMatHang(MatHang matHang) throws Exception {
-        String sql = "INSERT INTO MATHANG (MAMH, TENMH, HANGSANXUAT, GHICHU, DONGIA, TINHTRANG, THELOAI, SOLUONGTON) VALUES (?,?,?,?,?,?,?,?)";
+        String sql = "INSERT INTO MATHANG (MAMH, TENMH, MANCC, GHICHU, DONGIA, TINHTRANG, THELOAI, SOLUONGTON) VALUES (?,?,?,?,?,?,?,?)";
         PreparedStatement preparedStatement = null;
         
 
@@ -258,7 +258,7 @@ public class MatHangDAO {
      */
     public MatHang suaMatHang(MatHang matHang) throws Exception {
         String sql = "UPDATE MATHANG SET " +
-                "TENMH = ?, HANGSANXUAT = ?, GHICHU = ?, DONGIA = ?, " +
+                "TENMH = ?, MANCC = ?, GHICHU = ?, DONGIA = ?, " +
                 "TINHTRANG = ?, THELOAI = ?, SOLUONGTON = ? WHERE MAMH = ?";
         PreparedStatement preparedStatement = null;
 

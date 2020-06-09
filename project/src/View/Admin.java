@@ -8,6 +8,7 @@ package View;
 import VTabbed.QuanLyChoThueTab;
 import VTabbed.QuanLyKhachHangTab;
 import VTabbed.QuanLyMatHangTab;
+import VTabbed.QuanLyNhaCungCapTab;
 import VTabbed.QuanLyNhanVienTab;
 import VTabbed.ThongKeTab;
 import javax.swing.JFrame;
@@ -27,11 +28,13 @@ public class Admin extends JFrame {
     private QuanLyChoThueTab quanLyChoThueTab;
     private QuanLyNhanVienTab quanLyNhanVienTab;
     private ThongKeTab thongKeTabbed;
+    private QuanLyNhaCungCapTab quanLyNhaCungCapTab;
     
     private void prepareUI() throws Exception{
         
         if(DangNhap.taiKhoan.getLoaiTaiKhoan()==1){
             TabKhachHang.add("Quản Lý Khách Hàng",quanLyKhachHangTab = new QuanLyKhachHangTab());
+            TabKhachHang.add("Quản Lý Nhà Cung Cấp",quanLyNhaCungCapTab = new QuanLyNhaCungCapTab());
             TabKhachHang.add("Quản Lý Mặt Hàng",quanLyMatHangTab = new QuanLyMatHangTab());
             TabKhachHang.add("Quản Lý Cho Thuê",quanLyChoThueTab = new QuanLyChoThueTab());
             TabKhachHang.add("Quản Lý Nhân Viên",quanLyNhanVienTab = new QuanLyNhanVienTab());
@@ -59,6 +62,7 @@ public class Admin extends JFrame {
             public void stateChanged(ChangeEvent e) {
                 try {
                     quanLyKhachHangTab.refresh(true);
+                    quanLyNhaCungCapTab.refresh(true);
                     quanLyMatHangTab.refresh(true);
                     quanLyChoThueTab.refresh(true);
                     quanLyNhanVienTab.refresh(true);

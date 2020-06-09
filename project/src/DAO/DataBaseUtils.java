@@ -40,7 +40,7 @@ public class DataBaseUtils {
     }
     public static Connection getConnection(){
         Connection connection = null;
-        String url = "jdbc:sqlserver://localhost:1433;databasename=QUANLYBANHANG";
+        String url = "jdbc:sqlserver://localhost:1433;databasename=QUANLYBANHANGVERSION1";
         String user = "sa";
         String password = "Quang1999.";
         try {

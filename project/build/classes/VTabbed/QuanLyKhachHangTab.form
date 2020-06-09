@@ -18,12 +18,12 @@
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="1" attributes="0">
               <EmptySpace min="-2" pref="44" max="-2" attributes="0"/>
-              <Component id="btnThem" min="-2" max="-2" attributes="0"/>
-              <EmptySpace min="-2" pref="56" max="-2" attributes="0"/>
-              <Component id="btnSua" min="-2" max="-2" attributes="0"/>
-              <EmptySpace min="-2" pref="68" max="-2" attributes="0"/>
-              <Component id="btnXoa" min="-2" max="-2" attributes="0"/>
-              <EmptySpace pref="345" max="32767" attributes="0"/>
+              <Component id="btnThem" min="-2" pref="77" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="41" max="-2" attributes="0"/>
+              <Component id="btnSua" min="-2" pref="86" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="32" max="-2" attributes="0"/>
+              <Component id="btnXoa" min="-2" pref="91" max="-2" attributes="0"/>
+              <EmptySpace pref="299" max="32767" attributes="0"/>
               <Component id="txtTimKiem" min="-2" pref="210" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
               <Component id="cbFilterTimKiem" min="-2" pref="226" max="-2" attributes="0"/>

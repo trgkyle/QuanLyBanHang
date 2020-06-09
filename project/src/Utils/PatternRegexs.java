@@ -11,6 +11,7 @@ package Utils;
  */
 public class PatternRegexs {
     public static final String REGEX_MAMATHANG = "^MH(\\d*)";
+    public static final String REGEX_MANHACUNGCAP = "^NC(\\d*)";
     public static final String REGEX_MAKHACHHANG = "^KH(\\d*)";
     public static final String REGEX_MANHANVIEN = "^NV(\\d*)";
     public static final String REGEX_MAHOADON = "^HD(\\d*)";

@@ -122,18 +122,7 @@ public class QuanLyChoThueTab extends javax.swing.JPanel {
             return false;
         }
 
-//        // kiểm tra người dùng có mượn quá hạn không
-//        for (HoaDon hoaDon1 : danhSachChoThue.getAll()) {
-//            if (hoaDon1.getKhachHang().getMaKH().equals(
-//                    hoaDon.getKhachHang().getMaKH())) {
-//                if (!hoaDon1.isThueQuaHan()) {
-//                    JOptionPane.showMessageDialog(rootComponent,
-//                            "Khách hàng thuê mặt hàng quá hạn\nVui lòng nhắc khách hàng trả mặt hàng trước khi thuê");
-//                    
-//                    return false;
-//                }
-//            }
-//        }
+
 
         return true;
     }
@@ -253,13 +242,10 @@ public class QuanLyChoThueTab extends javax.swing.JPanel {
                 btnThanhToan.setEnabled(true);
             } else {
                 btnThanhToan.setToolTipText("Hoá đơn đã được thanh toán");
-                //btnThanhToan.setEnabled(false);
+               
 
                 btnSua.setToolTipText("Không thể cập nhật hoá đơn đã thanh toán");
-               // btnSua.setEnabled(false);
-
-//                btnXoa.setToolTipText("Không thể xoá hoá đơn đã thanh toán");
-//                btnXoa.setEnabled(false);
+               
             }
         }
     }

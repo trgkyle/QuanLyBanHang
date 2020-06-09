@@ -5,16 +5,21 @@
             <url>src/View/Admin.java</url>
             <bookmark id="1">
                 <name/>
-                <line>49</line>
+                <line>52</line>
                 <key/>
             </bookmark>
         </file>
     </editor-bookmarks>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/home/quang/Documents/github1/BaiTapLonJAVA_2020/project/src/VTabbed/QuanLyChoThueTab.java</file>
-            <file>file:/home/quang/Documents/github1/BaiTapLonJAVA_2020/project/src/View/Admin.java</file>
-            <file>file:/home/quang/Documents/github1/BaiTapLonJAVA_2020/project/src/VTableModel/ChoThueTableModel.java</file>
+            <file>file:/home/quang/Documents/github1/BaiTapLonJAVA_2020/project/src/VTabbed/QuanLyMatHangTab.java</file>
+            <file>file:/home/quang/Documents/github1/BaiTapLonJAVA_2020/project/src/DAO/DataBaseUtils.java</file>
+            <file>file:/home/quang/Documents/github1/BaiTapLonJAVA_2020/project/src/Utils/PatternRegexs.java</file>
+            <file>file:/home/quang/Documents/github1/BaiTapLonJAVA_2020/project/src/VTabbed/QuanLyNhaCungCapTab.java</file>
+            <file>file:/home/quang/Documents/github1/BaiTapLonJAVA_2020/project/src/VDialog/NhaCungCapDialog.java</file>
+            <file>file:/home/quang/Documents/github1/BaiTapLonJAVA_2020/project/src/VDialog/MatHangDialog.java</file>
+            <file>file:/home/quang/Documents/github1/BaiTapLonJAVA_2020/project/src/VDialog/ChoThueDialog.java</file>
+            <file>file:/home/quang/Documents/github1/BaiTapLonJAVA_2020/project/src/DAO/NhaCungCapDAO.java</file>
             <file>file:/home/quang/Documents/github1/BaiTapLonJAVA_2020/project/src/View/Run.java</file>
         </group>
     </open-files>
