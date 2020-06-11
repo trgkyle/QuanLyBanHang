@@ -237,7 +237,7 @@ public class QuanLyChoThueTab extends javax.swing.JPanel {
             btnXoa.setToolTipText("[Alt + X] Xoá hoá đơn");
             btnXoa.setEnabled(true);
 
-            if (String.valueOf(tblChoThue.getModel().getValueAt(rowSelected, 6)).equalsIgnoreCase("Đang thuê")) {
+            if (String.valueOf(tblChoThue.getModel().getValueAt(rowSelected, 6)).equalsIgnoreCase("Chưa thanh toán")) {
                 btnThanhToan.setToolTipText("Thanh toán hoá đơn");
                 btnThanhToan.setEnabled(true);
             } else {
@@ -588,7 +588,7 @@ public class QuanLyChoThueTab extends javax.swing.JPanel {
 
         btnThanhToan.setText("Thanh Toán");
 
-        cbFilter.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Tất cả", "Đã thanh toán", "Đang thuê" }));
+        cbFilter.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Tất cả", "Đã thanh toán", "Chưa thanh toán" }));
 
         cbFilterTimKiem.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Mã Hóa Đơn", "Tên Khách Hàng", "Tên Mặt Hàng" }));
 

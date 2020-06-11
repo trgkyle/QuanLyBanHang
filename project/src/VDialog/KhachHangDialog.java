@@ -223,7 +223,6 @@ public class KhachHangDialog extends javax.swing.JDialog {
         comGioiTinh = new javax.swing.JComboBox<>();
         dateChooser = new com.toedter.calendar.JDateChooser();
         btnThem = new javax.swing.JButton();
-        btnLamMoi = new javax.swing.JButton();
         btnTroVe = new javax.swing.JButton();
 
         jLabel1.setText("Mã Khách Hàng");
@@ -244,8 +243,6 @@ public class KhachHangDialog extends javax.swing.JDialog {
 
         btnThem.setText("Lưu");
 
-        btnLamMoi.setText("Làm Mới");
-
         btnTroVe.setText("Thoát");
         btnTroVe.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -262,9 +259,7 @@ public class KhachHangDialog extends javax.swing.JDialog {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(btnThem, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(43, 43, 43)
-                        .addComponent(btnLamMoi, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
+                        .addGap(165, 165, 165)
                         .addComponent(btnTroVe, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -325,7 +320,6 @@ public class KhachHangDialog extends javax.swing.JDialog {
                 .addGap(49, 49, 49)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnThem)
-                    .addComponent(btnLamMoi)
                     .addComponent(btnTroVe))
                 .addContainerGap(72, Short.MAX_VALUE))
         );
@@ -343,7 +337,6 @@ public class KhachHangDialog extends javax.swing.JDialog {
    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnLamMoi;
     private javax.swing.JButton btnThem;
     private javax.swing.JButton btnTroVe;
     private javax.swing.JComboBox<String> comGioiTinh;

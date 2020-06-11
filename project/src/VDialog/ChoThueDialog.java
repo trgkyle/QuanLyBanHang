@@ -281,9 +281,9 @@ public class ChoThueDialog extends javax.swing.JDialog {
 
         jLabel3.setText("Mã Mặt Hàng");
 
-        jLabel4.setText("Ngày Thuê");
+        jLabel4.setText("Ngày Mua");
 
-        jLabel5.setText("Số Lượng Thuê");
+        jLabel5.setText("Số Lượng Mua");
 
         btnLuu.setText("Lưu");
 
@@ -298,7 +298,7 @@ public class ChoThueDialog extends javax.swing.JDialog {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(btnLuu, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 23, Short.MAX_VALUE)
                         .addComponent(btnThoat, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)

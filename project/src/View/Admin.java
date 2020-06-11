@@ -36,14 +36,14 @@ public class Admin extends JFrame {
             TabKhachHang.add("Quản Lý Khách Hàng",quanLyKhachHangTab = new QuanLyKhachHangTab());
             TabKhachHang.add("Quản Lý Nhà Cung Cấp",quanLyNhaCungCapTab = new QuanLyNhaCungCapTab());
             TabKhachHang.add("Quản Lý Mặt Hàng",quanLyMatHangTab = new QuanLyMatHangTab());
-            TabKhachHang.add("Quản Lý Cho Thuê",quanLyChoThueTab = new QuanLyChoThueTab());
+            TabKhachHang.add("Quản Lý Mua Bán",quanLyChoThueTab = new QuanLyChoThueTab());
             TabKhachHang.add("Quản Lý Nhân Viên",quanLyNhanVienTab = new QuanLyNhanVienTab());
             TabKhachHang.addTab("Thống kê", thongKeTabbed = new ThongKeTab());
         }
         else{
             TabKhachHang.add("Quản Lý Khách Hàng",quanLyKhachHangTab = new QuanLyKhachHangTab());
             TabKhachHang.add("Quản Lý Mặt Hàng",quanLyMatHangTab = new QuanLyMatHangTab());
-            TabKhachHang.add("Quản Lý Cho Thuê",quanLyChoThueTab = new QuanLyChoThueTab());
+            TabKhachHang.add("Quản Lý Mua Bán",quanLyChoThueTab = new QuanLyChoThueTab());
             TabKhachHang.addTab("Thống kê", thongKeTabbed = new ThongKeTab());
         }
         

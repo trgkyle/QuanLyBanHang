@@ -155,7 +155,7 @@
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel2">
       <Properties>
-        <Property name="text" type="java.lang.String" value="T&#x1ed5;ng S&#x1ed1; H&#xe0;ng &#x110;&#xe3; Thu&#xea;"/>
+        <Property name="text" type="java.lang.String" value="T&#x1ed5;ng S&#x1ed1; H&#xe0;ng &#x110;&#xe3; Mua"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel3">

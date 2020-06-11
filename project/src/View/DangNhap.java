@@ -90,7 +90,6 @@ public class DangNhap extends javax.swing.JFrame {
                     JOptionPane.showMessageDialog(rootComponent, "Vui lòng nhập mật khẩu");
                     return;
                 }
-
                 // lấy tài khoản từ db lên
                 try {
                     taiKhoan = taiKhoanDAO.getTaiKhoan(tenTaiKhoan);
@@ -98,11 +97,9 @@ public class DangNhap extends javax.swing.JFrame {
                     JOptionPane.showMessageDialog(rootComponent, e1);
                     return;
                 }
-
                 // kiểm tra username, password có đúng không
                 // nếu đúng thì vào form quản lý
-                // nếu sai thì thông báo
-                
+                // nếu sai thì thông báo              
                 if (tenTaiKhoan.equals(taiKhoan.getTenTaiKhoan()) && matKhau.equals(taiKhoan.getMatKhau())) {
                     
                     rootComponent.setVisible(false);

@@ -20,7 +20,7 @@ public class ChoThueTableModel extends AbstractTableModel {
     private ArrayList<HoaDon> hoaDons;
 
     private final String[] columnNames = new String[]{
-            "Mã hoá đơn", "Tên khách hàng", "Tên mặt hàng", "Số lượng", "Ngày thuê", "Thành tiền", "Tình trạng"
+            "Mã hoá đơn", "Tên khách hàng", "Tên mặt hàng", "Số lượng", "Ngày mua", "Thành tiền", "Tình trạng"
     };
 
     public void setModel(ArrayList<HoaDon> hoaDons) {
@@ -67,7 +67,7 @@ public class ChoThueTableModel extends AbstractTableModel {
                     NumberFormat numberFormat = NumberFormat.getCurrencyInstance(locale);
                     return numberFormat.format(hoaDon.thanhTien());
                 case 6:
-                    return hoaDon.isTinhTrang() ? "Đã thanh toán" : "Đang thuê";
+                    return hoaDon.isTinhTrang() ? "Đã thanh toán" : "Chưa thanh toán";
             }
         } catch (Exception e) {
 

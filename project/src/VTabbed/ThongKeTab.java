@@ -255,7 +255,7 @@ public class ThongKeTab extends javax.swing.JPanel {
 
         jLabel1.setText("Tổng Số Hàng");
 
-        jLabel2.setText("Tổng Số Hàng Đã Thuê");
+        jLabel2.setText("Tổng Số Hàng Đã Mua");
 
         jLabel3.setText("Tổng Loại Hàng Đã Hỏng");
 
