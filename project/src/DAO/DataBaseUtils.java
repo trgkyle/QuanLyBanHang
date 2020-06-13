@@ -41,8 +41,8 @@ public class DataBaseUtils {
     public static Connection getConnection(){
         Connection connection = null;
         String url = "jdbc:sqlserver://localhost:1433;databasename=QUANLYBANHANGVERSION1";
-        String user = "sa";
-        String password = "Quang1999.";
+        String user = "user";
+        String password = "user";
         try {
             connection = DriverManager.getConnection(url, user, password);
         } catch (Exception e) {e.printStackTrace();}
