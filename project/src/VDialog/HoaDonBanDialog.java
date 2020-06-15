@@ -13,7 +13,6 @@ import Model.KhachHang;
 import Model.MatHang;
 import Utils.Formats;
 import Utils.PatternRegexs;
-import com.toedter.calendar.JDateChooser;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Date;
@@ -22,44 +21,91 @@ import java.util.regex.Pattern;
 import javax.swing.JFrame;
 import javax.swing.JRootPane;
 import javax.swing.SwingUtilities;
+import static javax.swing.WindowConstants.DISPOSE_ON_CLOSE;
 
 /**
  *
- * @author quang
+ * @author s2hdp
  */
-public class ChoThueDialog extends javax.swing.JDialog {
-
-    /**
-     * Creates new form ChoThueDialog
-     */
+public class HoaDonBanDialog extends javax.swing.JDialog {
     
     private HoaDon hoaDon;
-    
+
     private boolean isChinhSua;
     private DanhSachKhachHang danhSachKhachHang;
     private DanhSachMatHang danhSachMatHang;
     private HoaDonDAO hoaDonDAO;
     
     
+    /**
+     * Creates new form HoaDonBanDialog
+     */
+    
+    public HoaDonBanDialog(JFrame frame, HoaDon hoaDon) throws Exception {
+        super(frame, true);
+        initComponents();
+
+        this.hoaDon = hoaDon;
+
+        // Tạo kết nối đến db
+        try {
+            hoaDonDAO = HoaDonDAO.getInstance();
+            danhSachKhachHang = new DanhSachKhachHang();
+            danhSachMatHang = new DanhSachMatHang();
+        } catch (Exception e) {
+            throw new Exception(e.getMessage());
+        }
+
+        if (hoaDon == null) {
+
+            isChinhSua = false;
+        } else {
+
+            isChinhSua = true;
+        }
+
+        // Tạo GUI
+        prepareDialog();
+
+        // Button mặc định khi bấm Enter
+        JRootPane rootPane = SwingUtilities.getRootPane(this);
+        rootPane.setDefaultButton(btnLuu);
+
+        // cấu hình cho dialog
+        setResizable(false);
+        setSize(600, 585);
+        setAlwaysOnTop(true);
+        setLocationRelativeTo(null);
+
+        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+        setVisible(true);
+    }
+    
     private void prepareDialog() {
-        
+
         // set the txtMaHoaDon
         txtMaHoaDon.setText(getMaHoaDonMoi());
         txtMaHoaDon.setEditable(false);
-        if (isChinhSua) txtMaHoaDon.setText(hoaDon.getMaHoaDon());
-        
+        if (isChinhSua) {
+            txtMaHoaDon.setText(hoaDon.getMaHoaDon());
+        }
+
         // set the comboBox khachHang
-        for (KhachHang khachHang : danhSachKhachHang.getAll())
+        for (KhachHang khachHang : danhSachKhachHang.getAll()) {
             cbMaKhachHang.addItem(String.format("[%s] %s", khachHang.getMaKH(), khachHang.getHoTen()));
-        if (isChinhSua)
+        }
+        if (isChinhSua) {
             cbMaKhachHang.setSelectedItem(String.format("[%s] %s",
                     hoaDon.getKhachHang().getMaKH(),
                     hoaDon.getKhachHang().getHoTen()));
-        
+        }
+
         // set the comboBox matHang
-        for (MatHang matHang : danhSachMatHang.getAll())
-            if (matHang.getSoLuongTon() > 0)
+        for (MatHang matHang : danhSachMatHang.getAll()) {
+            if (matHang.getSoLuongTon() > 0) {
                 cbMaMatHang.addItem(String.format("[%s] %s", matHang.getMaMatHang(), matHang.getTenMatHang()));
+            }
+        }
 
         if (isChinhSua) {
             cbMaMatHang.addItem(String.format("[%s] %s",
@@ -68,34 +114,27 @@ public class ChoThueDialog extends javax.swing.JDialog {
             cbMaMatHang.setSelectedItem(String.format("[%s] %s",
                     hoaDon.getMatHang().getMaMatHang(), hoaDon.getMatHang().getTenMatHang()));
         }
-        
-        
 
         if (isChinhSua) {
             dateChooser.setDate(hoaDon.getNgayLap());
-        }
-        else {
+        } else {
             dateChooser.setDate(new java.util.Date());
         }
-        
-        
+
         //set the soLuong
-        if (isChinhSua) txtSoLuong.setText(String.valueOf(hoaDon.getSoLuong()));
-        
-        
-         
-        
+        if (isChinhSua) {
+            txtSoLuong.setText(String.valueOf(hoaDon.getSoLuong()));
+        }
+
         //set the button Thoat
         btnThoat.addActionListener(btnThoat_Click());
-        
-        
+
         //set the button Luu
         btnLuu.addActionListener(btnLuu_Click());
-        
-        
+
     }
-    
-     /**
+
+    /**
      * Generate mã hoá đơn mới
      *
      * @return
@@ -127,9 +166,8 @@ public class ChoThueDialog extends javax.swing.JDialog {
 
         return newID;
     }
-    
-    
-     /**
+
+    /**
      * Sự kiện nút Thoát
      *
      * @return
@@ -139,11 +177,10 @@ public class ChoThueDialog extends javax.swing.JDialog {
             @Override
             public void actionPerformed(ActionEvent e) {
                 hoaDon = null;
-                ChoThueDialog.this.dispose();
+                HoaDonBanDialog.this.dispose();
             }
         };
     }
-
 
     /**
      * Sự kiện nút Lưu
@@ -155,7 +192,6 @@ public class ChoThueDialog extends javax.swing.JDialog {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // Kiểm tra dữ liệu nhập
-                
 
                 MatHang matHang = null;
                 KhachHang khachHang = null;
@@ -166,15 +202,17 @@ public class ChoThueDialog extends javax.swing.JDialog {
                 pattern = Pattern.compile("(MH\\d.*)]", Pattern.MULTILINE);
                 matcher = pattern.matcher(String.valueOf(cbMaMatHang.getSelectedItem()));
 
-                if (matcher.find())
+                if (matcher.find()) {
                     matHang = danhSachMatHang.getAll().get(danhSachMatHang.tim(matcher.group(1)));
+                }
 
                 // lấy dữ liệu khách hàng
                 pattern = Pattern.compile("(KH\\d.*)]", Pattern.MULTILINE);
                 matcher = pattern.matcher(cbMaKhachHang.getSelectedItem().toString());
 
-                if (matcher.find())
+                if (matcher.find()) {
                     khachHang = danhSachKhachHang.getAll().get(danhSachKhachHang.tim(matcher.group(1)));
+                }
 
                 // tạo thông tin hoá đơn
                 hoaDon = new HoaDon(
@@ -184,7 +222,7 @@ public class ChoThueDialog extends javax.swing.JDialog {
                         khachHang,
                         Date.valueOf(Formats.DATE_FORMAT_SQL.format(dateChooser.getDate()))
                 );
-                
+
                 System.out.println(hoaDon);
 
                 // đóng dialog
@@ -192,10 +230,7 @@ public class ChoThueDialog extends javax.swing.JDialog {
             }
         };
     }
-    
-    
-    
-    
+
     /**
      * Trả về hoá đơn đã được thêm/chỉnh sửa
      *
@@ -204,52 +239,7 @@ public class ChoThueDialog extends javax.swing.JDialog {
     public HoaDon getHoaDon() {
         return hoaDon;
     }
-
-    
-    
-    
-    public ChoThueDialog(JFrame frame, HoaDon hoaDon) throws Exception {
-        super(frame, true);
-        initComponents();
-        
-        this.hoaDon = hoaDon;
-
-        // Tạo kết nối đến db
-        try {
-            hoaDonDAO = HoaDonDAO.getInstance();
-            danhSachKhachHang = new DanhSachKhachHang();
-            danhSachMatHang = new DanhSachMatHang();
-        } catch (Exception e) {
-            throw new Exception(e.getMessage());
-        }
-
-        
-        
-        
-        if (hoaDon == null) {
-            
-            isChinhSua = false;
-        } else {
-            
-            isChinhSua = true;
-        }
-
-        // Tạo GUI
-        prepareDialog();
-
-        // Button mặc định khi bấm Enter
-        JRootPane rootPane = SwingUtilities.getRootPane(this);
-        rootPane.setDefaultButton(btnLuu);
-
-        // cấu hình cho dialog
-        setResizable(false);
-        setSize(600, 585);
-        setAlwaysOnTop(true);
-        setLocationRelativeTo(null);
-        
-        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-        setVisible(true);
-    }
+    // End of variables declaration                   
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -273,10 +263,12 @@ public class ChoThueDialog extends javax.swing.JDialog {
         cbMaMatHang = new javax.swing.JComboBox<>();
         txtSoLuong = new javax.swing.JTextField();
         btnLuu = new javax.swing.JButton();
+        jLabel6 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         jPanel1.setToolTipText("Hóa đơn");
+        jPanel1.setName("Hi"); // NOI18N
 
         jLabel1.setText("Mã Hoá Đơn");
 
@@ -290,33 +282,30 @@ public class ChoThueDialog extends javax.swing.JDialog {
 
         jLabel5.setText("Số Lượng Mua");
 
-        btnLuu.setText("Lưu");
+        btnLuu.setText("Tạo hóa đơn");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addComponent(btnLuu, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
+                .addComponent(btnThoat, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE))
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(btnLuu, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGap(18, 18, 18)
-                        .addComponent(btnThoat, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel2)
-                            .addComponent(jLabel1)
-                            .addComponent(jLabel3)
-                            .addComponent(jLabel4)
-                            .addComponent(jLabel5))
-                        .addGap(52, 52, 52)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(txtMaHoaDon)
-                            .addComponent(cbMaMatHang, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(cbMaKhachHang, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(dateChooser, javax.swing.GroupLayout.DEFAULT_SIZE, 174, Short.MAX_VALUE)
-                            .addComponent(txtSoLuong))))
-                .addGap(0, 0, Short.MAX_VALUE))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel2)
+                    .addComponent(jLabel1)
+                    .addComponent(jLabel3)
+                    .addComponent(jLabel4)
+                    .addComponent(jLabel5))
+                .addGap(52, 52, 52)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(txtMaHoaDon)
+                    .addComponent(cbMaMatHang, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(cbMaKhachHang, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(dateChooser, javax.swing.GroupLayout.DEFAULT_SIZE, 174, Short.MAX_VALUE)
+                    .addComponent(txtSoLuong)))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -345,30 +334,38 @@ public class ChoThueDialog extends javax.swing.JDialog {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnLuu)
                     .addComponent(btnThoat))
-                .addContainerGap(30, Short.MAX_VALUE))
+                .addContainerGap(87, Short.MAX_VALUE))
         );
+
+        jLabel6.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabel6.setText("HÓA ĐƠN BÁN");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(48, 48, 48)
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(65, Short.MAX_VALUE))
+                .addGap(125, 125, 125)
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(125, 125, 125))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGap(249, 249, 249)
+                .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(228, 228, 228))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(43, 43, 43)
-                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGap(34, 34, 34)
+                .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(44, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnLuu;
@@ -381,6 +378,7 @@ public class ChoThueDialog extends javax.swing.JDialog {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JTextField txtMaHoaDon;
     private javax.swing.JTextField txtSoLuong;

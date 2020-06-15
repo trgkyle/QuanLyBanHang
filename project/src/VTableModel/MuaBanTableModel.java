@@ -16,7 +16,7 @@ import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Locale;
 
-public class ChoThueTableModel extends AbstractTableModel {
+public class MuaBanTableModel extends AbstractTableModel {
     private ArrayList<HoaDon> hoaDons;
 
     private final String[] columnNames = new String[]{
@@ -27,7 +27,7 @@ public class ChoThueTableModel extends AbstractTableModel {
         this.hoaDons = hoaDons;
     }
 
-    public ChoThueTableModel(ArrayList<HoaDon> hoaDons) {
+    public MuaBanTableModel(ArrayList<HoaDon> hoaDons) {
         this.hoaDons = hoaDons;
     }
 

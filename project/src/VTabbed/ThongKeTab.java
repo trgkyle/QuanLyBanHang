@@ -8,7 +8,7 @@ package VTabbed;
 import Model.DanhSachChoThue;
 import Model.DanhSachMatHang;
 import Model.HoaDon;
-import VTableModel.ChoThueTableModel;
+import VTableModel.MuaBanTableModel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.NumberFormat;
@@ -34,7 +34,7 @@ public class ThongKeTab extends javax.swing.JPanel {
     private static DanhSachChoThue danhSachChoThue;
     private static DanhSachMatHang danhSachMatHang;
     private static LocalDate currentDate = LocalDate.now();
-    private ChoThueTableModel choThueTableModel;
+    private MuaBanTableModel choThueTableModel;
     
     /**
      * Tạo GUI
@@ -47,7 +47,7 @@ public class ThongKeTab extends javax.swing.JPanel {
         cbNam.addActionListener(cbNam_Selected());
         
         
-        choThueTableModel = new ChoThueTableModel(danhSachChoThue.getAll());
+        choThueTableModel = new MuaBanTableModel(danhSachChoThue.getAll());
 
         tblChoThue.setModel(choThueTableModel);
         // generate dữ liệu năm (5 năm gần đây)
