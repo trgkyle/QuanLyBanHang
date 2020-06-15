@@ -16,6 +16,7 @@ import Utils.PatternRegexs;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Date;
+import java.text.DecimalFormat;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.swing.JFrame;
@@ -28,19 +29,17 @@ import static javax.swing.WindowConstants.DISPOSE_ON_CLOSE;
  * @author s2hdp
  */
 public class HoaDonBanDialog extends javax.swing.JDialog {
-    
+
     private HoaDon hoaDon;
 
     private boolean isChinhSua;
     private DanhSachKhachHang danhSachKhachHang;
     private DanhSachMatHang danhSachMatHang;
     private HoaDonDAO hoaDonDAO;
-    
-    
+
     /**
      * Creates new form HoaDonBanDialog
      */
-    
     public HoaDonBanDialog(JFrame frame, HoaDon hoaDon) throws Exception {
         super(frame, true);
         initComponents();
@@ -80,7 +79,7 @@ public class HoaDonBanDialog extends javax.swing.JDialog {
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setVisible(true);
     }
-    
+
     private void prepareDialog() {
 
         // set the txtMaHoaDon
@@ -151,17 +150,17 @@ public class HoaDonBanDialog extends javax.swing.JDialog {
 
         // Nếu chưa có hoá đơn nào trong DB thì trả về mã mặc định
         if (lastID.isEmpty()) {
-            return "HD00001";
+            return "HDB00001";
         }
 
         // generate mã
         Pattern pattern = Pattern.compile(PatternRegexs.REGEX_MAHOADON);
         Matcher matcher = pattern.matcher(lastID);
         if (matcher.find()) {
-            int number = Integer.parseInt(matcher.group(1));
+            int number = Integer.parseInt(matcher.group(2));
             number++;
 
-            newID = String.format("HD%05d", number);
+            newID = String.format("HDB%05d", number);
         }
 
         return newID;
@@ -198,7 +197,7 @@ public class HoaDonBanDialog extends javax.swing.JDialog {
                 Pattern pattern = null;
                 Matcher matcher = null;
 
-                // lấy dữ liệu băng đĩa
+                // lấy dữ liệu mặt hàng
                 pattern = Pattern.compile("(MH\\d.*)]", Pattern.MULTILINE);
                 matcher = pattern.matcher(String.valueOf(cbMaMatHang.getSelectedItem()));
 
@@ -263,6 +262,8 @@ public class HoaDonBanDialog extends javax.swing.JDialog {
         cbMaMatHang = new javax.swing.JComboBox<>();
         txtSoLuong = new javax.swing.JTextField();
         btnLuu = new javax.swing.JButton();
+        jLabel7 = new javax.swing.JLabel();
+        inputThanhTien = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
@@ -282,15 +283,41 @@ public class HoaDonBanDialog extends javax.swing.JDialog {
 
         jLabel5.setText("Số Lượng Mua");
 
+        txtSoLuong.addInputMethodListener(new java.awt.event.InputMethodListener() {
+            public void caretPositionChanged(java.awt.event.InputMethodEvent evt) {
+            }
+            public void inputMethodTextChanged(java.awt.event.InputMethodEvent evt) {
+                txtSoLuongInputMethodTextChanged(evt);
+            }
+        });
+        txtSoLuong.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtSoLuongActionPerformed(evt);
+            }
+        });
+        txtSoLuong.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtSoLuongKeyPressed(evt);
+            }
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtSoLuongKeyReleased(evt);
+            }
+        });
+
         btnLuu.setText("Tạo hóa đơn");
+
+        jLabel7.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        jLabel7.setText("Thành tiền");
+
+        inputThanhTien.setEditable(false);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+            .addGroup(jPanel1Layout.createSequentialGroup()
                 .addComponent(btnLuu, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnThoat, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE))
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -298,14 +325,17 @@ public class HoaDonBanDialog extends javax.swing.JDialog {
                     .addComponent(jLabel1)
                     .addComponent(jLabel3)
                     .addComponent(jLabel4)
-                    .addComponent(jLabel5))
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addComponent(jLabel7, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jLabel5, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addGap(52, 52, 52)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(txtMaHoaDon)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(cbMaMatHang, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(cbMaKhachHang, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(dateChooser, javax.swing.GroupLayout.DEFAULT_SIZE, 174, Short.MAX_VALUE)
-                    .addComponent(txtSoLuong)))
+                    .addComponent(dateChooser, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(txtSoLuong)
+                    .addComponent(inputThanhTien)
+                    .addComponent(txtMaHoaDon)))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -330,28 +360,32 @@ public class HoaDonBanDialog extends javax.swing.JDialog {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5)
                     .addComponent(txtSoLuong, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(28, 28, 28)
+                .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel7)
+                    .addComponent(inputThanhTien, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(22, 22, 22)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnLuu)
                     .addComponent(btnThoat))
-                .addContainerGap(87, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         jLabel6.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jLabel6.setText("HÓA ĐƠN BÁN");
+        jLabel6.setText("HÓA ĐƠN BÁN HÀNG");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(125, 125, 125)
-                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGap(125, 125, 125))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGap(249, 249, 249)
                 .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGap(228, 228, 228))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGap(175, 175, 175)
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(153, 153, 153))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -360,11 +394,41 @@ public class HoaDonBanDialog extends javax.swing.JDialog {
                 .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(44, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void txtSoLuongActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtSoLuongActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtSoLuongActionPerformed
+
+    private void txtSoLuongKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtSoLuongKeyPressed
+        
+    }//GEN-LAST:event_txtSoLuongKeyPressed
+
+    private void txtSoLuongInputMethodTextChanged(java.awt.event.InputMethodEvent evt) {//GEN-FIRST:event_txtSoLuongInputMethodTextChanged
+
+    }//GEN-LAST:event_txtSoLuongInputMethodTextChanged
+
+    private void txtSoLuongKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtSoLuongKeyReleased
+        // TODO add your handling code here:
+        // TODO add your handling code here:
+        MatHang matHang = null;
+        Pattern pattern = null;
+        Matcher matcher = null;
+
+        // lấy dữ liệu mặt hàng
+        pattern = Pattern.compile("(MH\\d.*)]", Pattern.MULTILINE);
+        matcher = pattern.matcher(String.valueOf(cbMaMatHang.getSelectedItem()));
+        if (matcher.find()) {
+            matHang = danhSachMatHang.getAll().get(danhSachMatHang.tim(matcher.group(1)));
+            System.out.println(matHang.getDonGia());
+            DecimalFormat dcf = new DecimalFormat("###,###,###,###.##");
+            this.inputThanhTien.setText(dcf.format(Double.parseDouble(this.txtSoLuong.getText()) * matHang.getDonGia()));
+        }
+    }//GEN-LAST:event_txtSoLuongKeyReleased
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -373,12 +437,14 @@ public class HoaDonBanDialog extends javax.swing.JDialog {
     private javax.swing.JComboBox<String> cbMaKhachHang;
     private javax.swing.JComboBox<String> cbMaMatHang;
     private com.toedter.calendar.JDateChooser dateChooser;
+    private javax.swing.JTextField inputThanhTien;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JTextField txtMaHoaDon;
     private javax.swing.JTextField txtSoLuong;
