@@ -67,7 +67,7 @@ public class MuaBanTableModel extends AbstractTableModel {
                     NumberFormat numberFormat = NumberFormat.getCurrencyInstance(locale);
                     return numberFormat.format(hoaDon.thanhTien());
                 case 6:
-                    return hoaDon.isTinhTrang() ? "Đã thanh toán" : "Chưa thanh toán";
+                    return hoaDon.isTinhTrang() == 1 ? "Đã thanh toán" : hoaDon.isTinhTrang() == 0 ? "Chưa thanh toán": "Trả hàng";
             }
         } catch (Exception e) {
 

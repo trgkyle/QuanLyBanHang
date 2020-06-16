@@ -72,7 +72,7 @@ public class HoaDonDAO {
                         resultSet.getString("MAHD"),
                         KhachHangDAO.getInstance().getKhachHang(resultSet.getString("MAKH")),
                         resultSet.getDate("NGAYLAP"),
-                        resultSet.getInt("TINHTRANG") == 1
+                        resultSet.getInt("TINHTRANG")
                 );
 
                 hoaDons.add(hoaDon);
@@ -108,7 +108,7 @@ public class HoaDonDAO {
                     resultSet.getString("MAHD"),
                     KhachHangDAO.getInstance().getKhachHang(resultSet.getString("MAKH")),
                     resultSet.getDate("NGAYLAP"),
-                    resultSet.getInt("TINHTRANG") == 1
+                    resultSet.getInt("TINHTRANG")
             );
         } catch (Exception e) {
             throw new Exception("Lỗi lấy thông tin hoá đơn");
@@ -162,7 +162,7 @@ public class HoaDonDAO {
 
             preparedStatement.setString(1, hoaDon.getMatHang().getMaMatHang());
             preparedStatement.setInt(2, hoaDon.getSoLuong());
-            preparedStatement.setInt(3, hoaDon.isTinhTrang() ? 1 : 0);
+            preparedStatement.setInt(3, hoaDon.isTinhTrang());
             preparedStatement.setString(4, hoaDon.getMaHoaDon());
 
             if (preparedStatement.executeUpdate() > 0) {
@@ -213,7 +213,7 @@ public class HoaDonDAO {
                 preparedStatement.setString(1, hoaDon.getMaHoaDon());
                 preparedStatement.setString(2, hoaDon.getMatHang().getMaMatHang());
                 preparedStatement.setInt(3, hoaDon.getSoLuong());
-                preparedStatement.setInt(4, hoaDon.isTinhTrang() ? 1 : 0);
+                preparedStatement.setInt(4, hoaDon.isTinhTrang());
 
                 if (preparedStatement.executeUpdate() > 0) {
                     dataBaseUtils.commitQuery();

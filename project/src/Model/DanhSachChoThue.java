@@ -136,7 +136,7 @@ public class DanhSachChoThue {
         double tong = 0;
 
         for (HoaDon hoaDon : hoaDons) {
-            if (hoaDon.isTinhTrang()) {
+            if (hoaDon.isTinhTrang() == 1) {
                 if (thang == 0 && nam == 0) {
                     tong += hoaDon.thanhTien();
                 } else if (thang == 0 && hoaDon.getNgayLap().toLocalDate().getYear() == nam)
@@ -172,7 +172,7 @@ public class DanhSachChoThue {
         int tong = 0;
 
         for (HoaDon hoaDon : hoaDons)
-            if (!hoaDon.isTinhTrang())
+            if (hoaDon.isTinhTrang() == 1)
                 tong += hoaDon.getSoLuong();
 
         return tong;

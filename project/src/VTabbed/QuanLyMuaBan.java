@@ -54,6 +54,7 @@ public class QuanLyMuaBan extends javax.swing.JPanel {
         } else {
             btnThem.setEnabled(true);
         }
+        
 
         cbFilter.addActionListener(cbFilter_Selected());
 
@@ -65,11 +66,10 @@ public class QuanLyMuaBan extends javax.swing.JPanel {
 
         sorter = new TableRowSorter<>(muaBanTableModel);
 
-        tblChoThue.setModel(muaBanTableModel);
-        tblChoThue.setRowSorter(sorter);
+        tblHoaDon.setModel(muaBanTableModel);
+        tblHoaDon.setRowSorter(sorter);
 
         refresh(true);
-
     }
 
     /**
@@ -95,7 +95,20 @@ public class QuanLyMuaBan extends javax.swing.JPanel {
 
         return true;
     }
-
+    private void validateActionButtonHoaDon(){
+        HoaDon hoaDon = danhSachChoThue.getAll().get(getCurrentSelected());
+        System.out.println(hoaDon.isTinhTrang());
+        if(hoaDon.isTinhTrang() == -1){
+            btnSua.setEnabled(false);
+            btnThanhToan.setEnabled(false);
+            btnTraHang.setEnabled(false);
+        }
+        else {
+            btnSua.setEnabled(true);
+            btnThanhToan.setEnabled(true);
+            btnTraHang.setEnabled(true);
+        }
+    }
     /**
      * Sự kiện khi nhập text tìm kiếm Tìm kiếm realtime
      *
@@ -127,7 +140,7 @@ public class QuanLyMuaBan extends javax.swing.JPanel {
      */
     private int getCurrentSelected() {
         try {
-            return tblChoThue.convertRowIndexToModel(tblChoThue.getSelectedRow());
+            return tblHoaDon.convertRowIndexToModel(tblHoaDon.getSelectedRow());
         } catch (Exception e) {
             return -1;
         }
@@ -151,12 +164,12 @@ public class QuanLyMuaBan extends javax.swing.JPanel {
 
             // load lại table
             muaBanTableModel.setModel(danhSachChoThue.getAll());
-            tblChoThue.setModel(muaBanTableModel);
+            tblHoaDon.setModel(muaBanTableModel);
 
             sorter.setModel(muaBanTableModel);
 
-            tblChoThue.revalidate();
-            tblChoThue.repaint();
+            tblHoaDon.revalidate();
+            tblHoaDon.repaint();
             setCurrentSelected(oldSelected);
         }
         /**
@@ -181,7 +194,7 @@ public class QuanLyMuaBan extends javax.swing.JPanel {
          */
         int rowSelected = -1;
         try {
-            rowSelected = tblChoThue.convertRowIndexToModel(tblChoThue.getSelectedRow());
+            rowSelected = tblHoaDon.convertRowIndexToModel(tblHoaDon.getSelectedRow());
         } catch (Exception e) {
         }
 
@@ -189,8 +202,8 @@ public class QuanLyMuaBan extends javax.swing.JPanel {
             btnSua.setToolTipText("Vui lòng chọn hoá đơn cần cập nhật thông tin");
             btnSua.setEnabled(false);
 
-            btnXoa.setToolTipText("Vui lòng chọn hoá đơn cần xoá");
-            btnXoa.setEnabled(false);
+            btnTraHang.setToolTipText("Vui lòng chọn hoá đơn cần xoá");
+            btnTraHang.setEnabled(false);
 
             btnThanhToan.setToolTipText("Vui lòng chọn hoá đơn cần thanh toán");
             btnThanhToan.setEnabled(false);
@@ -198,10 +211,10 @@ public class QuanLyMuaBan extends javax.swing.JPanel {
             btnSua.setEnabled(true);
             btnSua.setToolTipText("[Alt + S] Cập nhật thông tin hoá đơn");
 
-            btnXoa.setToolTipText("[Alt + X] Xoá hoá đơn");
-            btnXoa.setEnabled(true);
+            btnTraHang.setToolTipText("[Alt + X] Xoá hoá đơn");
+            btnTraHang.setEnabled(true);
 
-            if (String.valueOf(tblChoThue.getModel().getValueAt(rowSelected, 6)).equalsIgnoreCase("Chưa thanh toán")) {
+            if (String.valueOf(tblHoaDon.getModel().getValueAt(rowSelected, 6)).equalsIgnoreCase("Chưa thanh toán")) {
                 btnThanhToan.setToolTipText("Thanh toán hoá đơn");
                 btnThanhToan.setEnabled(true);
             } else {
@@ -211,6 +224,7 @@ public class QuanLyMuaBan extends javax.swing.JPanel {
 
             }
         }
+        this.validateActionButtonHoaDon();
     }
 
     /**
@@ -219,14 +233,14 @@ public class QuanLyMuaBan extends javax.swing.JPanel {
      * @param oldSelected
      */
     private void setCurrentSelected(int oldSelected) {
-        if (oldSelected != -1 && oldSelected <= tblChoThue.getModel().getRowCount()) {
-            tblChoThue.setRowSelectionInterval(oldSelected, oldSelected);
-        } else if (oldSelected != -1 && oldSelected > tblChoThue.getModel().getRowCount()) {
-            tblChoThue.setRowSelectionInterval(oldSelected - 1, oldSelected - 1);
-        } else if (oldSelected == -1 && tblChoThue.getModel().getRowCount() > 0) {
-            tblChoThue.setRowSelectionInterval(0, 0);
+        if (oldSelected != -1 && oldSelected <= tblHoaDon.getModel().getRowCount()) {
+            tblHoaDon.setRowSelectionInterval(oldSelected, oldSelected);
+        } else if (oldSelected != -1 && oldSelected > tblHoaDon.getModel().getRowCount()) {
+            tblHoaDon.setRowSelectionInterval(oldSelected - 1, oldSelected - 1);
+        } else if (oldSelected == -1 && tblHoaDon.getModel().getRowCount() > 0) {
+            tblHoaDon.setRowSelectionInterval(0, 0);
         } else {
-            tblChoThue.clearSelection();
+            tblHoaDon.clearSelection();
         }
     }
 
@@ -243,7 +257,6 @@ public class QuanLyMuaBan extends javax.swing.JPanel {
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(rootComponent, ex);
         }
-        System.out.println("End dialog hoa don");
         // lấy hoá đơn nhập trong dialog
         HoaDon hoaDon = hoaDonMuaDialog.getHoaDon();
 
@@ -271,7 +284,6 @@ public class QuanLyMuaBan extends javax.swing.JPanel {
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(rootComponent, ex);
         }
-        System.out.println("End dialog hoa don");
         // lấy hoá đơn nhập trong dialog
         HoaDon hoaDon = hoaDonBanDialog.getHoaDon();
 
@@ -297,7 +309,7 @@ public class QuanLyMuaBan extends javax.swing.JPanel {
             JOptionPane.showMessageDialog(rootComponent, "Vui lòng chọn hoá đơn cần sửa");
 
             return;
-        } else if (String.valueOf(tblChoThue.getModel().getValueAt(getCurrentSelected(), 6)).equalsIgnoreCase("Đã thanh toán")) {
+        } else if (String.valueOf(tblHoaDon.getModel().getValueAt(getCurrentSelected(), 6)).equalsIgnoreCase("Đã thanh toán")) {
             JOptionPane.showMessageDialog(rootComponent, "Không thể sửa hoá đơn đã thanh toán");
             return;
         }
@@ -347,7 +359,7 @@ public class QuanLyMuaBan extends javax.swing.JPanel {
 
         // hiện dialog xác nhận
         int reply = JOptionPane.showConfirmDialog(null,
-                "Bạn có muốn trả mặt hàng thuộc hoá đơn này không?\nTên khách hàng: " + tenKhachHang + "\nTên mặt hàng: " + tenMatHang,
+                "Bạn có muốn trả mặt hàng thuộc hoá đơn này không?\nHóa đơn " + maHoaDon + "\nTên khách hàng: " + tenKhachHang + "\nTên mặt hàng: " + tenMatHang,
                 "Trả hàng", JOptionPane.YES_NO_OPTION);
 
         // nếu người dùng đồng ý
@@ -356,7 +368,9 @@ public class QuanLyMuaBan extends javax.swing.JPanel {
                 // update trang thai hoa don
                 HoaDon hoaDon = danhSachChoThue.getAll().get(getCurrentSelected());
                 // return to stock
-                tblChoThue.clearSelection();
+                hoaDon.setTinhTrang(-1);
+                danhSachChoThue.sua(hoaDon);
+                tblHoaDon.clearSelection();
                 refresh(true);
             } catch (Exception e1) {
                 JOptionPane.showMessageDialog(rootComponent, e1);
@@ -374,7 +388,7 @@ public class QuanLyMuaBan extends javax.swing.JPanel {
         if (getCurrentSelected() == -1) {
             JOptionPane.showMessageDialog(rootComponent, "Vui lòng chọn hoá đơn cần thanh toán");
             return;
-        } else if (String.valueOf(tblChoThue.getModel().getValueAt(getCurrentSelected(), 6)).equalsIgnoreCase("Đã thanh toán")) {
+        } else if (String.valueOf(tblHoaDon.getModel().getValueAt(getCurrentSelected(), 6)).equalsIgnoreCase("Đã thanh toán")) {
             JOptionPane.showMessageDialog(rootComponent, "Hoá đơn đã thanh toán");
             return;
         }
@@ -524,11 +538,11 @@ public class QuanLyMuaBan extends javax.swing.JPanel {
 
         jPanel1 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        tblChoThue = new javax.swing.JTable();
+        tblHoaDon = new javax.swing.JTable();
         jButton1 = new javax.swing.JButton();
         btnThem = new javax.swing.JButton();
         btnSua = new javax.swing.JButton();
-        btnXoa = new javax.swing.JButton();
+        btnTraHang = new javax.swing.JButton();
         btnThanhToan = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
@@ -536,7 +550,7 @@ public class QuanLyMuaBan extends javax.swing.JPanel {
         txtTimKiem = new javax.swing.JTextField();
         cbFilterTimKiem = new javax.swing.JComboBox<>();
 
-        tblChoThue.setModel(new javax.swing.table.DefaultTableModel(
+        tblHoaDon.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null, null, null},
                 {null, null, null, null, null, null, null},
@@ -547,7 +561,12 @@ public class QuanLyMuaBan extends javax.swing.JPanel {
                 "Mã hóa đơn", "Tên khách hàng", "Tên mặt hàng", "Số lượng", "Ngày mua", "Thành tiền", "Tình trạng"
             }
         ));
-        jScrollPane1.setViewportView(tblChoThue);
+        tblHoaDon.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblHoaDonMouseClicked(evt);
+            }
+        });
+        jScrollPane1.setViewportView(tblHoaDon);
 
         jButton1.setText("Tạo hóa đơn xuất kho");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -571,11 +590,11 @@ public class QuanLyMuaBan extends javax.swing.JPanel {
             }
         });
 
-        btnXoa.setText("Trả hàng");
-        btnXoa.setEnabled(false);
-        btnXoa.addActionListener(new java.awt.event.ActionListener() {
+        btnTraHang.setText("Trả hàng");
+        btnTraHang.setEnabled(false);
+        btnTraHang.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnXoaActionPerformed(evt);
+                btnTraHangActionPerformed(evt);
             }
         });
 
@@ -608,7 +627,7 @@ public class QuanLyMuaBan extends javax.swing.JPanel {
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addComponent(btnSua, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
-                                .addComponent(btnXoa)
+                                .addComponent(btnTraHang)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(btnThanhToan))
                             .addGroup(jPanel1Layout.createSequentialGroup()
@@ -640,7 +659,7 @@ public class QuanLyMuaBan extends javax.swing.JPanel {
                         .addGap(13, 13, 13)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(btnSua)
-                            .addComponent(btnXoa)
+                            .addComponent(btnTraHang)
                             .addComponent(btnThanhToan)))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -684,10 +703,10 @@ public class QuanLyMuaBan extends javax.swing.JPanel {
         this.btnSua_Click();
     }//GEN-LAST:event_btnSuaActionPerformed
 
-    private void btnXoaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnXoaActionPerformed
+    private void btnTraHangActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTraHangActionPerformed
         // TODO add your handling code here:
         this.btnTraHang_Click();
-    }//GEN-LAST:event_btnXoaActionPerformed
+    }//GEN-LAST:event_btnTraHangActionPerformed
 
     private void btnThanhToanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnThanhToanActionPerformed
         // TODO add your handling code here:
@@ -699,12 +718,18 @@ public class QuanLyMuaBan extends javax.swing.JPanel {
         this.btnThemHoaDonBan();
     }//GEN-LAST:event_jButton1ActionPerformed
 
+    private void tblHoaDonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblHoaDonMouseClicked
+        // TODO add your handling code here:
+        this.validateActionButtonHoaDon();
+        
+    }//GEN-LAST:event_tblHoaDonMouseClicked
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnSua;
     private javax.swing.JButton btnThanhToan;
     private javax.swing.JButton btnThem;
-    private javax.swing.JButton btnXoa;
+    private javax.swing.JButton btnTraHang;
     private javax.swing.JComboBox<String> cbFilter;
     private javax.swing.JComboBox<String> cbFilterTimKiem;
     private javax.swing.JButton jButton1;
@@ -712,7 +737,7 @@ public class QuanLyMuaBan extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable tblChoThue;
+    private javax.swing.JTable tblHoaDon;
     private javax.swing.JTextField txtTimKiem;
     // End of variables declaration//GEN-END:variables
 }

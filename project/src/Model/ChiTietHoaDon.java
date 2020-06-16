@@ -13,13 +13,13 @@ public class ChiTietHoaDon {
     private MatHang matHang;
    // private int soNgayDuocMuon;
     private int soLuong;
-    private boolean tinhTrang;  // true: đã trả, false: đang thuê
-
-    public boolean isTinhTrang() {
+    private int tinhTrang;  // true: đã trả, false: đang thuê
+    
+    public int isTinhTrang() {
         return tinhTrang;
     }
 
-    public void setTinhTrang(boolean tinhTrang) {
+    public void setTinhTrang(int tinhTrang) {
         this.tinhTrang = tinhTrang;
     }
 
@@ -48,10 +48,10 @@ public class ChiTietHoaDon {
         this.matHang = matHang;
        
         this.soLuong = soLuong;
-        this.tinhTrang = false;
+        this.tinhTrang = 0;
     }
 
-    public ChiTietHoaDon(MatHang matHang, int soLuong, boolean tinhTrang) {
+    public ChiTietHoaDon(MatHang matHang, int soLuong, int tinhTrang) {
         this.matHang = matHang;
        
         this.soLuong = soLuong;
