@@ -59,6 +59,21 @@ public class DanhSachChoThue {
 
         return -1;
     }
+    
+    
+    /**
+     * tìm hoá đơn trong danh sách trả về hóa đơn
+     *
+     * @param maHoaDon
+     * @return
+     */
+    public HoaDon timHD(String maHoaDon) {
+        for (int i = 0; i < hoaDons.size(); i++)
+            if (hoaDons.get(i).getMaHoaDon().equals(maHoaDon))
+                return hoaDons.get(i);
+
+        return null;
+    }
 
 
     /**

@@ -333,32 +333,29 @@ public class QuanLyMuaBan extends javax.swing.JPanel {
      *
      * @return
      */
-    private void btnXoa_Click() {
+    private void btnTraHang_Click() {
         // nếu người dùng chưa chọn dòng nào thì thông báo
-        // nếu hoá đơn đó đã thanh toán thì không cho xoá
         if (getCurrentSelected() == -1) {
-            JOptionPane.showMessageDialog(rootComponent, "Vui lòng chọn hoá đơn cần xoá");
+            JOptionPane.showMessageDialog(rootComponent, "Vui lòng chọn hoá đơn cần trả");
             return;
         }
-//                } else if (String.valueOf(tblChoThue.getModel().getValueAt(getCurrentSelected(), 6)).equalsIgnoreCase("Đã thanh toán")) {
-//                    JOptionPane.showMessageDialog(rootComponent,"Không thể xoá hoá đơn đã thanh toán");
-//                    return;
-//                }
 
-        // lấy thông tin hoá đơn cần xoá
+        // lấy thông tin hoá đơn cần trả
         String maHoaDon = muaBanTableModel.getValueAt(getCurrentSelected(), 0).toString();
         String tenKhachHang = muaBanTableModel.getValueAt(getCurrentSelected(), 1).toString();
         String tenMatHang = muaBanTableModel.getValueAt(getCurrentSelected(), 2).toString();
 
         // hiện dialog xác nhận
         int reply = JOptionPane.showConfirmDialog(null,
-                "Bạn có muốn xoá hoá đơn này không?\nTên khách hàng: " + tenKhachHang + "\nTên mặt hàng: " + tenMatHang,
-                "Xóa", JOptionPane.YES_NO_OPTION);
+                "Bạn có muốn trả mặt hàng thuộc hoá đơn này không?\nTên khách hàng: " + tenKhachHang + "\nTên mặt hàng: " + tenMatHang,
+                "Trả hàng", JOptionPane.YES_NO_OPTION);
 
         // nếu người dùng đồng ý
         if (reply == JOptionPane.YES_OPTION) {
             try {
-                danhSachChoThue.xoa(maHoaDon);
+                // update trang thai hoa don
+                HoaDon hoaDon = danhSachChoThue.getAll().get(getCurrentSelected());
+                // return to stock
                 tblChoThue.clearSelection();
                 refresh(true);
             } catch (Exception e1) {
@@ -609,9 +606,9 @@ public class QuanLyMuaBan extends javax.swing.JPanel {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(btnSua, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(btnSua, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
-                                .addComponent(btnXoa, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(btnXoa)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(btnThanhToan))
                             .addGroup(jPanel1Layout.createSequentialGroup()
@@ -689,7 +686,7 @@ public class QuanLyMuaBan extends javax.swing.JPanel {
 
     private void btnXoaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnXoaActionPerformed
         // TODO add your handling code here:
-        this.btnXoa_Click();
+        this.btnTraHang_Click();
     }//GEN-LAST:event_btnXoaActionPerformed
 
     private void btnThanhToanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnThanhToanActionPerformed

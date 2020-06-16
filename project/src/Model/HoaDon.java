@@ -9,6 +9,7 @@ package Model;
  *
  * @author quang
  */
+import DAO.HoaDonDAO;
 import java.sql.Date;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
@@ -55,7 +56,7 @@ public class HoaDon extends ChiTietHoaDon {
 
     public HoaDon() {
     }
-
+    
     public HoaDon(MatHang matHang, int soLuong) {
         super(matHang, soLuong);
     }
