@@ -12,23 +12,9 @@
     </editor-bookmarks>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/s2hdp/Documents/github/real/banhang/project/src/VTableModel/MuaBanTableModel.java</file>
-            <file>file:/C:/Users/s2hdp/Documents/github/real/banhang/project/src/VTableModel/NhanVienTableModel.java</file>
-            <file>file:/C:/Users/s2hdp/Documents/github/real/banhang/project/src/Model/DanhSachChoThue.java</file>
-            <file>file:/C:/Users/s2hdp/Documents/github/real/banhang/project/src/VTableModel/KhachHangTableModel.java</file>
-            <file>file:/C:/Users/s2hdp/Documents/github/real/banhang/project/src/VTableModel/MatHangTableModel.java</file>
-            <file>file:/C:/Users/s2hdp/Documents/github/real/banhang/project/src/VDialog/HoaDonBanDialog.java</file>
-            <file>file:/C:/Users/s2hdp/Documents/github/real/banhang/project/src/VTabbed/ThongKeTab.java</file>
-            <file>file:/C:/Users/s2hdp/Documents/github/real/banhang/project/src/VTableModel/NhaCungCapTableModel.java</file>
-            <file>file:/C:/Users/s2hdp/Documents/github/real/banhang/project/src/Model/HoaDon.java</file>
-            <file>file:/C:/Users/s2hdp/Documents/github/real/banhang/project/src/VTabbed/QuanLyMuaBan.java</file>
             <file>file:/C:/Users/s2hdp/Documents/github/real/banhang/project/src/View/Run.java</file>
-            <file>file:/C:/Users/s2hdp/Documents/github/real/banhang/project/src/VDialog/HoaDonMuaDialog.java</file>
-            <file>file:/C:/Users/s2hdp/Documents/github/real/banhang/project/src/VTabbed/QuanLyMatHangTab.java</file>
-            <file>file:/C:/Users/s2hdp/Documents/github/real/banhang/project/src/VTabbed/QuanLyNhanVienTab.java</file>
-            <file>file:/C:/Users/s2hdp/Documents/github/real/banhang/project/src/View/Admin.java</file>
-            <file>file:/C:/Users/s2hdp/Documents/github/real/banhang/project/src/Model/ChiTietHoaDon.java</file>
-            <file>file:/C:/Users/s2hdp/Documents/github/real/banhang/project/src/View/DangNhap.java</file>
+            <file>file:/C:/Users/s2hdp/Documents/github/real/banhang/project/src/VTabbed/ThongKeTab.java</file>
+            <file>file:/C:/Users/s2hdp/Documents/github/real/banhang/project/src/VTabbed/QuanLyMuaBan.java</file>
         </group>
     </open-files>
 </project-private>

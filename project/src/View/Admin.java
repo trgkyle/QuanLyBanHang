@@ -31,7 +31,6 @@ public class Admin extends JFrame {
     private QuanLyNhaCungCapTab quanLyNhaCungCapTab;
     
     private void prepareUI() throws Exception{
-        
         if(DangNhap.taiKhoan.getLoaiTaiKhoan()==1){
             TabKhachHang.add("Quản Lý Khách Hàng",quanLyKhachHangTab = new QuanLyKhachHangTab());
             TabKhachHang.add("Quản Lý Nhà Cung Cấp",quanLyNhaCungCapTab = new QuanLyNhaCungCapTab());

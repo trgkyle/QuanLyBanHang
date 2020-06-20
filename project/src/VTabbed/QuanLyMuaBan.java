@@ -35,7 +35,7 @@ public class QuanLyMuaBan extends javax.swing.JPanel {
      */
     private DanhSachMatHang danhSachMatHang;
     private DanhSachKhachHang danhSachKhachHang;
-    private DanhSachChoThue danhSachChoThue;
+    private DanhSachChoThue danhSachMuaBan;
     private final Component rootComponent = this;
 
     private int indexFilter = 0;
@@ -54,7 +54,6 @@ public class QuanLyMuaBan extends javax.swing.JPanel {
         } else {
             btnThem.setEnabled(true);
         }
-        
 
         cbFilter.addActionListener(cbFilter_Selected());
 
@@ -62,7 +61,7 @@ public class QuanLyMuaBan extends javax.swing.JPanel {
 
         cbFilterTimKiem.addActionListener(cbFilterTimKiem_Changed());
 
-        muaBanTableModel = new MuaBanTableModel(danhSachChoThue.getAll());
+        muaBanTableModel = new MuaBanTableModel(danhSachMuaBan.getAll());
 
         sorter = new TableRowSorter<>(muaBanTableModel);
 
@@ -95,20 +94,23 @@ public class QuanLyMuaBan extends javax.swing.JPanel {
 
         return true;
     }
-    private void validateActionButtonHoaDon(){
-        HoaDon hoaDon = danhSachChoThue.getAll().get(getCurrentSelected());
-        System.out.println(hoaDon.isTinhTrang());
-        if(hoaDon.isTinhTrang() == -1){
-            btnSua.setEnabled(false);
-            btnThanhToan.setEnabled(false);
-            btnTraHang.setEnabled(false);
-        }
-        else {
-            btnSua.setEnabled(true);
-            btnThanhToan.setEnabled(true);
-            btnTraHang.setEnabled(true);
+
+    private void validateActionButtonHoaDon() {
+        if (getCurrentSelected() != -1) {
+            HoaDon hoaDon = danhSachMuaBan.getAll().get(getCurrentSelected());
+            System.out.println(hoaDon.isTinhTrang());
+            if (hoaDon.isTinhTrang() == -1) {
+                btnSua.setEnabled(false);
+                btnThanhToan.setEnabled(false);
+                btnTraHang.setEnabled(false);
+            } else {
+                btnSua.setEnabled(true);
+                btnThanhToan.setEnabled(true);
+                btnTraHang.setEnabled(true);
+            }
         }
     }
+
     /**
      * Sự kiện khi nhập text tìm kiếm Tìm kiếm realtime
      *
@@ -157,13 +159,13 @@ public class QuanLyMuaBan extends javax.swing.JPanel {
             try {
                 danhSachMatHang.loadData();
                 danhSachKhachHang.loadData();
-                danhSachChoThue.loadData();
+                danhSachMuaBan.loadData();
             } catch (Exception e) {
                 JOptionPane.showMessageDialog(rootComponent, e);
             }
 
             // load lại table
-            muaBanTableModel.setModel(danhSachChoThue.getAll());
+            muaBanTableModel.setModel(danhSachMuaBan.getAll());
             tblHoaDon.setModel(muaBanTableModel);
 
             sorter.setModel(muaBanTableModel);
@@ -263,7 +265,7 @@ public class QuanLyMuaBan extends javax.swing.JPanel {
         // kiểm tra tình trạng mua và thêm vào DB
         try {
             if (hoaDon != null && kiemTraTinhTrangThue(hoaDon, 0)) {
-                danhSachChoThue.them(hoaDon);
+                danhSachMuaBan.them(hoaDon);
                 refresh(true);
             }
         } catch (Exception e1) {
@@ -290,7 +292,7 @@ public class QuanLyMuaBan extends javax.swing.JPanel {
         // kiểm tra tình trạng mua và thêm vào DB
         try {
             if (hoaDon != null && kiemTraTinhTrangThue(hoaDon, 0)) {
-                danhSachChoThue.them(hoaDon);
+                danhSachMuaBan.them(hoaDon);
                 refresh(true);
             }
         } catch (Exception e1) {
@@ -315,7 +317,7 @@ public class QuanLyMuaBan extends javax.swing.JPanel {
         }
 
         // lấy thông tin hoá đơn
-        HoaDon hoaDon = danhSachChoThue.getAll().get(getCurrentSelected());
+        HoaDon hoaDon = danhSachMuaBan.getAll().get(getCurrentSelected());
         int soLuongCu = hoaDon.getSoLuong();
 
         // hiện dialog sửa và thông tin sản phẩm
@@ -332,7 +334,7 @@ public class QuanLyMuaBan extends javax.swing.JPanel {
         // kiểm tra hoá đơn có rỗng không và tình trạng thuê
         try {
             if (hoaDon != null && kiemTraTinhTrangThue(hoaDon, soLuongCu)) {
-                danhSachChoThue.sua(hoaDon);
+                danhSachMuaBan.sua(hoaDon);
                 refresh(true);
             }
         } catch (Exception e1) {
@@ -366,10 +368,10 @@ public class QuanLyMuaBan extends javax.swing.JPanel {
         if (reply == JOptionPane.YES_OPTION) {
             try {
                 // update trang thai hoa don
-                HoaDon hoaDon = danhSachChoThue.getAll().get(getCurrentSelected());
+                HoaDon hoaDon = danhSachMuaBan.getAll().get(getCurrentSelected());
                 // return to stock
                 hoaDon.setTinhTrang(-1);
-                danhSachChoThue.sua(hoaDon);
+                danhSachMuaBan.sua(hoaDon);
                 tblHoaDon.clearSelection();
                 refresh(true);
             } catch (Exception e1) {
@@ -408,17 +410,17 @@ public class QuanLyMuaBan extends javax.swing.JPanel {
 
         if (thanhToanDialog.getKetQua() == 0) {
             try {
-                danhSachChoThue.thanhToanHoaDon(maHoaDon);
+                danhSachMuaBan.thanhToanHoaDon(maHoaDon);
                 refresh(true);
             } catch (Exception e1) {
                 JOptionPane.showMessageDialog(rootComponent, e1);
             }
         } else if (thanhToanDialog.getKetQua() > 0) {
             try {
-                HoaDon hoaDon = danhSachChoThue.getAll().get(danhSachChoThue.tim(maHoaDon));
+                HoaDon hoaDon = danhSachMuaBan.getAll().get(danhSachMuaBan.tim(maHoaDon));
                 hoaDon.setSoLuong(thanhToanDialog.getKetQua());
 
-                danhSachChoThue.sua(hoaDon);
+                danhSachMuaBan.sua(hoaDon);
                 refresh(true);
             } catch (Exception e1) {
                 JOptionPane.showMessageDialog(rootComponent, e1);
@@ -516,7 +518,7 @@ public class QuanLyMuaBan extends javax.swing.JPanel {
         initComponents();
 
         try {
-            danhSachChoThue = new DanhSachChoThue();
+            danhSachMuaBan = new DanhSachChoThue();
             danhSachKhachHang = new DanhSachKhachHang();
             danhSachMatHang = new DanhSachMatHang();
         } catch (Exception e) {
@@ -721,7 +723,7 @@ public class QuanLyMuaBan extends javax.swing.JPanel {
     private void tblHoaDonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblHoaDonMouseClicked
         // TODO add your handling code here:
         this.validateActionButtonHoaDon();
-        
+
     }//GEN-LAST:event_tblHoaDonMouseClicked
 
 

@@ -94,6 +94,13 @@ public class MatHang {
         this.tenMatHang = tenMatHang;
         this.soLuongTon = soLuongTon;
     }
+    
+    public MatHang(String maMatHang, String tenMatHang, int soLuongTon, double donGia) {
+        this.maMatHang = maMatHang;
+        this.tenMatHang = tenMatHang;
+        this.soLuongTon = soLuongTon;
+        this.donGia = donGia;
+    }
 
     public MatHang(String maMatHang, String tenMatHang, String theLoai, boolean tinhTrang, String hangSanXuat, String ghiChu, Double donGia, int soLuongTon) {
         this.maMatHang = maMatHang;

@@ -86,12 +86,6 @@ public class HoaDonMuaDialog extends javax.swing.JDialog {
             txtSoLuong.setText(String.valueOf(hoaDon.getSoLuong()));
         }
 
-        //set the button Thoat
-        btnThoat.addActionListener(btnThoat_Click());
-
-        //set the button Luu
-        btnLuu.addActionListener(btnLuu_Click());
-
     }
 
     /**
@@ -132,14 +126,9 @@ public class HoaDonMuaDialog extends javax.swing.JDialog {
      *
      * @return
      */
-    private ActionListener btnThoat_Click() {
-        return new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                hoaDon = null;
-                HoaDonMuaDialog.this.dispose();
-            }
-        };
+    private void btnThoat_Click() {
+        hoaDon = null;
+        HoaDonMuaDialog.this.dispose();
     }
 
     /**
@@ -147,48 +136,43 @@ public class HoaDonMuaDialog extends javax.swing.JDialog {
      *
      * @return
      */
-    private ActionListener btnLuu_Click() {
-        return new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                // Kiểm tra dữ liệu nhập
+    private void btnLuu_Click() {
+        // Kiểm tra dữ liệu nhập
 
-                MatHang matHang = null;
-                NhaCungCap nhacungcap = null;
-                KhachHang khachHang = null;
-                Pattern pattern = null;
-                Matcher matcher = null;
+        MatHang matHang = null;
+        NhaCungCap nhacungcap = null;
+        KhachHang khachHang = null;
+        Pattern pattern = null;
+        Matcher matcher = null;
 
-                // lấy dữ liệu mh
-                pattern = Pattern.compile("(MH\\d.*)]", Pattern.MULTILINE);
-                matcher = pattern.matcher(String.valueOf(cbMaMatHang.getSelectedItem()));
+        // lấy dữ liệu mh
+        pattern = Pattern.compile("(MH\\d.*)]", Pattern.MULTILINE);
+        matcher = pattern.matcher(String.valueOf(cbMaMatHang.getSelectedItem()));
 
-                if (matcher.find()) {
-                    matHang = danhSachMatHang.getAll().get(danhSachMatHang.tim(matcher.group(1)));
-                }
-                System.out.println(matHang.toString());
-                // lấy dữ liệu khách hàng
-                pattern = Pattern.compile("(KH\\d.*)]", Pattern.MULTILINE);
-                matcher = pattern.matcher(cbMaNhaCungCap.getSelectedItem().toString());
+        if (matcher.find()) {
+            matHang = danhSachMatHang.getAll().get(danhSachMatHang.tim(matcher.group(1)));
+        }
+        System.out.println(matHang.toString());
+        // lấy dữ liệu khách hàng
+        pattern = Pattern.compile("(KH\\d.*)]", Pattern.MULTILINE);
+        matcher = pattern.matcher(cbMaNhaCungCap.getSelectedItem().toString());
 
 //                if (matcher.find()) { ???
 //                    khachHang = danhSachKhachHang.getAll().get(danhSachKhachHang.tim(matcher.group(1)));
 //                } ????
-                // tạo thông tin hoá đơn
-                hoaDon = new HoaDon(
-                        matHang,
-                        Integer.parseInt(txtSoLuong.getText().trim()),
-                        txtMaHoaDon.getText().trim(),
-                        khachHang,
-                        Date.valueOf(Formats.DATE_FORMAT_SQL.format(dateChooser.getDate()))
-                );
+        // tạo thông tin hoá đơn sau khi đóng tab sẽ móc dữ liệu
+        hoaDon = new HoaDon(
+                matHang,
+                Integer.parseInt(txtSoLuong.getText().trim()),
+                txtMaHoaDon.getText().trim(),
+                khachHang,
+                Date.valueOf(Formats.DATE_FORMAT_SQL.format(dateChooser.getDate()))
+        );
 
-                System.out.println(hoaDon);
+        System.out.println(hoaDon);
 
-                // đóng dialog
-                dispose();
-            }
-        };
+        // đóng dialog
+        dispose();
     }
 
     /**
@@ -272,6 +256,11 @@ public class HoaDonMuaDialog extends javax.swing.JDialog {
         jLabel1.setText("Mã Hoá Đơn");
 
         btnThoat.setText("Thoát");
+        btnThoat.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnThoatActionPerformed(evt);
+            }
+        });
 
         jLabel2.setText("Mã nhà cung cấp");
 
@@ -282,6 +271,11 @@ public class HoaDonMuaDialog extends javax.swing.JDialog {
         jLabel5.setText("Số Lượng Mua");
 
         btnLuu.setText("Tạo hóa đơn");
+        btnLuu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLuuActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -361,12 +355,22 @@ public class HoaDonMuaDialog extends javax.swing.JDialog {
                 .addGap(34, 34, 34)
                 .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(48, Short.MAX_VALUE))
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(48, 48, 48))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnLuuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLuuActionPerformed
+        // TODO add your handling code here:
+        this.btnLuu_Click();
+    }//GEN-LAST:event_btnLuuActionPerformed
+
+    private void btnThoatActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnThoatActionPerformed
+        // TODO add your handling code here:
+        this.btnThoat_Click();
+    }//GEN-LAST:event_btnThoatActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

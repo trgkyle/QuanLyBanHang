@@ -10,10 +10,9 @@ package View;
  * @author quang
  */
 public class Run {
-
     public static void main(String args[]) {
         new DangNhap();
     }
 }
 
-// da test
+// da tes
