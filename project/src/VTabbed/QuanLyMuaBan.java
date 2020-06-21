@@ -49,13 +49,6 @@ public class QuanLyMuaBan extends javax.swing.JPanel {
      * Tạo GUI
      */
     private void prepareUI() {
-        if (danhSachKhachHang.getAll().size() <= 0) {
-            btnThem.setToolTipText("Không tìm thấy khách hàng");
-        } else if (danhSachMatHang.getAll().size() <= 0) {
-            btnThem.setToolTipText("Không tìm thấy mặt hàng trong kho");
-        } else {
-            btnThem.setEnabled(true);
-        }
 
         cbFilter.addActionListener(cbFilter_Selected());
 
@@ -81,10 +74,12 @@ public class QuanLyMuaBan extends javax.swing.JPanel {
      * @return
      */
     private boolean kiemTraTinhTrang(HoaDon hoaDon, int soLuongCu) {
-        if(soLuongCu == -1 ) return true;
+        if (soLuongCu == -1) {
+            return true;
+        }
         // kiểm tra số lượng đặt có đủ không
         int soLuongTon = soLuongCu;
-        for(MatHangHoaDon matHangHoaDon : hoaDon.getMatHang()){
+        for (MatHangHoaDon matHangHoaDon : hoaDon.getMatHang()) {
             soLuongTon = matHangHoaDon.getSoLuongTon();
             // kiểm tra mặt hàng
             if (matHangHoaDon.isTinhTrang()) {
@@ -97,7 +92,6 @@ public class QuanLyMuaBan extends javax.swing.JPanel {
             return false;
         }
 
-        
         return true;
     }
 
@@ -106,11 +100,9 @@ public class QuanLyMuaBan extends javax.swing.JPanel {
             HoaDon hoaDon = danhSachMuaBan.getAll().get(getCurrentSelected());
             System.out.println(hoaDon.isTinhTrang());
             if (hoaDon.isTinhTrang() == -1) {
-                btnSua.setEnabled(false);
                 btnThanhToan.setEnabled(false);
                 btnTraHang.setEnabled(false);
             } else {
-                btnSua.setEnabled(true);
                 btnThanhToan.setEnabled(true);
                 btnTraHang.setEnabled(true);
             }
@@ -184,22 +176,6 @@ public class QuanLyMuaBan extends javax.swing.JPanel {
          * Bật tắt nút thêm hoá đơn Khi chưa có người dùng và mặt hàng thì k
          * được thêm hoá đơn
          */
-        if (danhSachKhachHang.getAll().size() > 0 && danhSachMatHang.getAll().size() > 0) {
-            btnThem.setEnabled(true);
-            btnThem.setToolTipText("[Alt + T] Thêm hoá đơn");
-        } else if (danhSachKhachHang.getAll().size() <= 0) {
-            btnThem.setEnabled(false);
-            btnThem.setToolTipText("Vui lòng thêm khách hàng");
-        } else if (danhSachMatHang.getAll().size() <= 0) {
-            btnThem.setEnabled(false);
-            btnThem.setToolTipText("Vui lòng thêm mặt hàng");
-        }
-
-        /**
-         * Bật tắt nút xoá, sửa, thanh toán Khi người dùng chưa chọn hoá đơn nào
-         * thì disable nút xoá, sửa, thanh toán Nếu hoá đơn đã thanh toán thì
-         * disable nút thanh toán
-         */
         int rowSelected = -1;
         try {
             rowSelected = tblHoaDon.convertRowIndexToModel(tblHoaDon.getSelectedRow());
@@ -207,8 +183,6 @@ public class QuanLyMuaBan extends javax.swing.JPanel {
         }
 
         if (rowSelected == -1) {
-            btnSua.setToolTipText("Vui lòng chọn hoá đơn cần cập nhật thông tin");
-            btnSua.setEnabled(false);
 
             btnTraHang.setToolTipText("Vui lòng chọn hoá đơn cần xoá");
             btnTraHang.setEnabled(false);
@@ -216,8 +190,6 @@ public class QuanLyMuaBan extends javax.swing.JPanel {
             btnThanhToan.setToolTipText("Vui lòng chọn hoá đơn cần thanh toán");
             btnThanhToan.setEnabled(false);
         } else {
-            btnSua.setEnabled(true);
-            btnSua.setToolTipText("[Alt + S] Cập nhật thông tin hoá đơn");
 
             btnTraHang.setToolTipText("[Alt + X] Xoá hoá đơn");
             btnTraHang.setEnabled(true);
@@ -227,8 +199,6 @@ public class QuanLyMuaBan extends javax.swing.JPanel {
                 btnThanhToan.setEnabled(true);
             } else {
                 btnThanhToan.setToolTipText("Hoá đơn đã được thanh toán");
-
-                btnSua.setToolTipText("Không thể cập nhật hoá đơn đã thanh toán");
 
             }
         }
@@ -296,13 +266,9 @@ public class QuanLyMuaBan extends javax.swing.JPanel {
         }
         // lấy hoá đơn nhập trong dialog
         HoaDon hoaDon = hoaDonBanDialog.getHoaDon();
-        System.out.println(hoaDonBanDialog.getHoaDon().toString());
-        System.out.println("Lay size gio hang");
-        System.out.println(hoaDon.getMatHang().size());
         // kiểm tra tình trạng mua và thêm vào DB
         try {
             if (hoaDon != null && kiemTraTinhTrang(hoaDon, -1)) {
-                System.out.println("Go go go");
                 danhSachMuaBan.them(hoaDon);
                 refresh(true);
             }
@@ -382,10 +348,7 @@ public class QuanLyMuaBan extends javax.swing.JPanel {
             try {
                 // update trang thai hoa don
                 HoaDon hoaDon = danhSachMuaBan.getAll().get(getCurrentSelected());
-                // return to stock
-                hoaDon.setTinhTrang(-1);
-                danhSachMuaBan.sua(hoaDon);
-                tblHoaDon.clearSelection();
+                danhSachMuaBan.traHang(hoaDon.getMaHoaDon());
                 refresh(true);
             } catch (Exception e1) {
                 JOptionPane.showMessageDialog(rootComponent, e1);
@@ -399,7 +362,7 @@ public class QuanLyMuaBan extends javax.swing.JPanel {
      * @return
      */
     private void btnThanhToan_Click() {
-        
+
         // nếu người dùng chưa chọn dòng nào thì thông báo
         if (getCurrentSelected() == -1) {
             JOptionPane.showMessageDialog(rootComponent, "Vui lòng chọn hoá đơn cần trả");
@@ -423,54 +386,13 @@ public class QuanLyMuaBan extends javax.swing.JPanel {
                 HoaDon hoaDon = danhSachMuaBan.getAll().get(getCurrentSelected());
                 // return to stock
                 hoaDon.setTinhTrang(1);
-                danhSachMuaBan.sua(hoaDon);
+                danhSachMuaBan.thanhToanHoaDon(hoaDon.getMaHoaDon());
                 tblHoaDon.clearSelection();
                 refresh(true);
             } catch (Exception e1) {
                 JOptionPane.showMessageDialog(rootComponent, e1);
             }
         }
-        
-        // nếu người dùng chưa chọn dòng nào thì thông báo
-//        if (getCurrentSelected() == -1) {
-//            JOptionPane.showMessageDialog(rootComponent, "Vui lòng chọn hoá đơn cần thanh toán");
-//            return;
-//        } else if (String.valueOf(tblHoaDon.getModel().getValueAt(getCurrentSelected(), 6)).equalsIgnoreCase("Đã thanh toán")) {
-//            JOptionPane.showMessageDialog(rootComponent, "Hoá đơn đã thanh toán");
-//            return;
-//        }
-//
-//        // lấy thông tin hoá đơn cần thanh toán
-//        String maHoaDon = muaBanTableModel.getValueAt(getCurrentSelected(), 0).toString();
-//        String tenKhachHang = muaBanTableModel.getValueAt(getCurrentSelected(), 1).toString();
-//        String tenMatHang = muaBanTableModel.getValueAt(getCurrentSelected(), 2).toString();
-//        int soLuong = Integer.parseInt(muaBanTableModel.getValueAt(getCurrentSelected(), 3).toString());
-//
-//        ThanhToanDialog thanhToanDialog = new ThanhToanDialog(
-//                new JFrame(),
-//                tenKhachHang,
-//                tenMatHang,
-//                soLuong
-//        );
-//
-//        if (thanhToanDialog.getKetQua() == 0) {
-//            try {
-//                danhSachMuaBan.thanhToanHoaDon(maHoaDon);
-//                refresh(true);
-//            } catch (Exception e1) {
-//                JOptionPane.showMessageDialog(rootComponent, e1);
-//            }
-//        } else if (thanhToanDialog.getKetQua() > 0) {
-//            try {
-//                HoaDon hoaDon = danhSachMuaBan.getAll().get(danhSachMuaBan.tim(maHoaDon));
-////                hoaDon.setSoLuong(thanhToanDialog.getKetQua());
-//
-//                danhSachMuaBan.sua(hoaDon);
-//                refresh(true);
-//            } catch (Exception e1) {
-//                JOptionPane.showMessageDialog(rootComponent, e1);
-//            }
-//        }
     }
 
     /**
@@ -587,8 +509,6 @@ public class QuanLyMuaBan extends javax.swing.JPanel {
         jScrollPane1 = new javax.swing.JScrollPane();
         tblHoaDon = new javax.swing.JTable();
         jButton1 = new javax.swing.JButton();
-        btnThem = new javax.swing.JButton();
-        btnSua = new javax.swing.JButton();
         btnTraHang = new javax.swing.JButton();
         btnThanhToan = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
@@ -619,21 +539,6 @@ public class QuanLyMuaBan extends javax.swing.JPanel {
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
-            }
-        });
-
-        btnThem.setText("Tạo hóa đơn nhập kho");
-        btnThem.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnThemActionPerformed(evt);
-            }
-        });
-
-        btnSua.setText("Sửa hóa đơn");
-        btnSua.setEnabled(false);
-        btnSua.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnSuaActionPerformed(evt);
             }
         });
 
@@ -672,16 +577,11 @@ public class QuanLyMuaBan extends javax.swing.JPanel {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(btnSua, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
                                 .addComponent(btnTraHang)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(btnThanhToan))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(btnThem)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jButton1)))
-                        .addGap(50, 50, 50)
+                            .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(185, 185, 185)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel2))
@@ -698,28 +598,21 @@ public class QuanLyMuaBan extends javax.swing.JPanel {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtTimKiem, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel1)
+                    .addComponent(cbFilterTimKiem, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton1))
+                .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jButton1)
-                            .addComponent(btnThem))
-                        .addGap(13, 13, 13)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(btnSua)
-                            .addComponent(btnTraHang)
-                            .addComponent(btnThanhToan)))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(txtTimKiem, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel1)
-                            .addComponent(cbFilterTimKiem, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(18, 18, 18)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel2)
-                            .addComponent(cbFilter, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addGap(50, 50, 50)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 282, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel2)
+                        .addComponent(cbFilter, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(btnTraHang)
+                        .addComponent(btnThanhToan)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 17, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 282, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -736,19 +629,9 @@ public class QuanLyMuaBan extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addGap(23, 23, 23)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(87, Short.MAX_VALUE))
+                .addContainerGap(126, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
-
-    private void btnThemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnThemActionPerformed
-        // TODO add your handling code here:
-        this.btnThemHoaDonMua();
-    }//GEN-LAST:event_btnThemActionPerformed
-
-    private void btnSuaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSuaActionPerformed
-        // TODO add your handling code here:
-        this.btnSua_Click();
-    }//GEN-LAST:event_btnSuaActionPerformed
 
     private void btnTraHangActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTraHangActionPerformed
         // TODO add your handling code here:
@@ -773,9 +656,7 @@ public class QuanLyMuaBan extends javax.swing.JPanel {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnSua;
     private javax.swing.JButton btnThanhToan;
-    private javax.swing.JButton btnThem;
     private javax.swing.JButton btnTraHang;
     private javax.swing.JComboBox<String> cbFilter;
     private javax.swing.JComboBox<String> cbFilterTimKiem;

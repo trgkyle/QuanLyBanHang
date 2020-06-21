@@ -77,7 +77,7 @@ public class HoaDonBanDialog extends javax.swing.JDialog {
 
         // cấu hình cho dialog
         setResizable(false);
-        setSize(600, 585);
+        setSize(700, 700);
         setAlwaysOnTop(true);
         setLocationRelativeTo(null);
 
@@ -244,8 +244,12 @@ public class HoaDonBanDialog extends javax.swing.JDialog {
         if (matcher.find()) {
             matHang = danhSachMatHang.getAll().get(danhSachMatHang.tim(matcher.group(1)));
         }
-
+        
         MatHangHoaDon matHangHoaDon = new MatHangHoaDon(matHang, Integer.parseInt(this.txtSoLuong.getText()));
+        System.out.println("san pham truoc khi them vao gio hang");
+        System.out.println(matHangHoaDon.getHangSanXuat());
+        System.out.println(matHangHoaDon.getMaNhaCungCap());
+        System.out.println(matHangHoaDon.getTenNhaCungCap());
         System.out.println(matHangHoaDon.toString());
         boolean replace = false;
         for (int i = 0; i < this.gioHang.size(); i++) {
@@ -381,7 +385,7 @@ public class HoaDonBanDialog extends javax.swing.JDialog {
 
             },
             new String [] {
-                "Tên mặt hàng", "Nhà cung cấp", "Số lượng"
+                "Tên mặt hàng", "Mã nhà cung cấp", "Số lượng"
             }
         ) {
             Class[] types = new Class [] {

@@ -79,8 +79,7 @@ public class HoaDon extends ChiTietHoaDon {
             System.out.println(matHang.getDonGia());
             tongTien += (double) matHang.getSoLuong() * matHang.getDonGia();
         }
-        DecimalFormat dcf = new DecimalFormat("###,###,###,###.##");
-        return Double.parseDouble(dcf.format(tongTien));
+        return tongTien;
     }
 
     public HoaDon() {
@@ -98,6 +97,7 @@ public class HoaDon extends ChiTietHoaDon {
         this.maHoaDon = maHoaDon;
         this.khachHang = khachHang;
         this.ngayLap = ngayLap;
+        this.tinhTrang = tinhTrang;
     }
 
     public HoaDon(ArrayList<MatHangHoaDon> matHang, int soLuong, String maHoaDon, KhachHang khachHang) {

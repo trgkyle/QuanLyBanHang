@@ -51,7 +51,7 @@ public class MatHangHoaDon extends MatHang {
 
 
     public MatHangHoaDon(MatHang matHang, int soLuong) {
-        super(matHang.getMaMatHang(), matHang.getTenMatHang(), matHang.getSoLuongTon(),matHang.getDonGia());
+        super(matHang.getMaMatHang(),matHang.getTenMatHang(),matHang.getTenNhaCungCap(), matHang.getTheLoai(),matHang.isTinhTrang(),matHang.getHangSanXuat(), matHang.getGhiChu(), matHang.getDonGia(), matHang.getSoLuongTon());
         this.soLuong = soLuong;
     }
     

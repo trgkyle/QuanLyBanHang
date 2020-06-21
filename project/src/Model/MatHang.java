@@ -21,7 +21,7 @@ public class MatHang {
     private Double donGia;
     private int soLuongTon;
     private String tenNhaCungCap;
-    
+    private String maNhaCungCap;
 
     public int getSoLuongTon() {
         return soLuongTon;
@@ -87,6 +87,10 @@ public class MatHang {
         return donGia;
     }
 
+    public String getMaNhaCungCap() {
+        return maNhaCungCap;
+    }
+
     public void setDonGia(Double donGia) {
         this.donGia = donGia;
     }
@@ -124,6 +128,19 @@ public class MatHang {
     }
     
     public MatHang(String maMatHang, String tenMatHang,String tenNhacc, String theLoai, boolean tinhTrang, String hangSanXuat, String ghiChu, Double donGia, int soLuongTon) {
+        this.maMatHang = maMatHang;
+        this.tenMatHang = tenMatHang;
+        this.theLoai = theLoai;
+        this.tinhTrang = tinhTrang;
+        this.hangSanXuat = hangSanXuat;
+        this.ghiChu = ghiChu;
+        this.donGia = donGia;
+        this.soLuongTon = soLuongTon;
+        this.tenNhaCungCap = tenNhacc;
+    }
+    
+    public MatHang(String maMatHang,String maNhaCungCap, String tenMatHang,String tenNhacc, String theLoai, boolean tinhTrang, String hangSanXuat, String ghiChu, Double donGia, int soLuongTon) {
+        this.maNhaCungCap = maNhaCungCap;
         this.maMatHang = maMatHang;
         this.tenMatHang = tenMatHang;
         this.theLoai = theLoai;

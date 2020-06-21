@@ -30,77 +30,70 @@ public class ThongKeTab extends javax.swing.JPanel {
     /**
      * Creates new form ThongKeTab
      */
-    
     private static DanhSachChoThue danhSachChoThue;
     private static DanhSachMatHang danhSachMatHang;
     private static LocalDate currentDate = LocalDate.now();
     private MuaBanTableModel choThueTableModel;
-    
+
     /**
      * Tạo GUI
      */
     private void prepareUI() throws Exception {
-        
+
 //        btnDangXuat.addActionListener(btnDangXuat_Click());
-        
         cbThang.addActionListener(cbThang_Selected());
         cbNam.addActionListener(cbNam_Selected());
-        
-        
+
         choThueTableModel = new MuaBanTableModel(danhSachChoThue.getAll());
 
         tblHoaDon.setModel(choThueTableModel);
         // generate dữ liệu năm (5 năm gần đây)
         cbNam.addItem("Tất cả");
-        for (int i = 0; i < 5; i++)
+        for (int i = 0; i < 5; i++) {
             cbNam.addItem(String.valueOf(currentDate.getYear() - i));
+        }
 
         refresh();
-    
+
     }
-    
-    public void refresh() throws Exception{
+
+    public void refresh() throws Exception {
         final Pattern pattern = Pattern.compile("^Tháng (\\d.*)");
         try {
-            
-             // load data mới
+
+            // load data mới
             danhSachMatHang.loadData();
             danhSachChoThue.loadData();
 
             // Card doanh thu
-            int nam = String.valueOf(cbNam.getSelectedItem()).equalsIgnoreCase("Tất cả") ? 0 :
-                    Integer.parseInt(String.valueOf(cbNam.getSelectedItem()));
+            int nam = String.valueOf(cbNam.getSelectedItem()).equalsIgnoreCase("Tất cả") ? 0
+                    : Integer.parseInt(String.valueOf(cbNam.getSelectedItem()));
             int thang = 0;
             final Matcher matcher = pattern.matcher(String.valueOf(cbThang.getSelectedItem()));
-            if (matcher.find())
+            if (matcher.find()) {
                 thang = Integer.valueOf(matcher.group(1));
+            }
 
             // hiển thị doanh thu theo định dạng tiền việt nam
             Locale locale_vn = new Locale("vi", "VN");
             NumberFormat numberFormat = NumberFormat.getCurrencyInstance(locale_vn);
             txtDoanhThu.setText(numberFormat.format(danhSachChoThue.tongDoanhThu(thang, nam)));
 
-
-            
-            
-            
-            
-             // tình trạng kho
-            txtTongHang.setText(String.valueOf(danhSachMatHang.tongSoMatHangTon() +
-                    danhSachChoThue.soLuongMatHangDaThue()));
+            // tình trạng kho
+            txtTongHang.setText(String.valueOf(danhSachMatHang.tongSoMatHangTon()
+                    + danhSachChoThue.soLuongMatHangDaThue()));
 
             txtTongThue.setText(String.valueOf(danhSachChoThue.soLuongMatHangDaThue()));
 
             txtTongHong.setText(String.valueOf(danhSachMatHang.tongSoMatHangHong()));
-            
-            
-            
-            
-        // cập nhật bảng mua bán thanh toán
+
+            // cập nhật bảng mua bán thanh toán
             ArrayList<HoaDon> hoaDons = new ArrayList<>();
-            for (HoaDon hoaDon : danhSachChoThue.getAll())
-                if (hoaDon.isTinhTrang() == 0)
+            for (HoaDon hoaDon : danhSachChoThue.getAll()) {
+                if (hoaDon.isTinhTrang() == 0) {
                     hoaDons.add(hoaDon);
+                }
+            }
 
             choThueTableModel.setModel(hoaDons);
             tblHoaDon.setModel(choThueTableModel);
@@ -108,14 +101,12 @@ public class ThongKeTab extends javax.swing.JPanel {
             tblHoaDon.revalidate();
             tblHoaDon.repaint();
 
-
         } catch (Exception e) {
             e.printStackTrace();
         }
-    
+
     }
-    
-    
+
     /**
      * Sự kiện khi chọn item combo box Năm
      *
@@ -127,8 +118,9 @@ public class ThongKeTab extends javax.swing.JPanel {
             public void actionPerformed(ActionEvent e) {
 
                 /**
-                 * nếu như người dùng muốn xem tổng doanh thu thì xoá tất cả item tháng
-                 * item tháng sẽ phụ thuộc theo năm (nếu chọn năm hiện tại thì tháng không vươt quá tháng hiện tại)
+                 * nếu như người dùng muốn xem tổng doanh thu thì xoá tất cả
+                 * item tháng item tháng sẽ phụ thuộc theo năm (nếu chọn năm
+                 * hiện tại thì tháng không vươt quá tháng hiện tại)
                  */
                 if (String.valueOf(cbNam.getSelectedItem()).equalsIgnoreCase("Tất cả")) {
                     cbThang.removeAllItems();
@@ -137,8 +129,9 @@ public class ThongKeTab extends javax.swing.JPanel {
                     // generate dữ liệu tháng theo năm
                     cbThang.removeAllItems();
                     int nam = Integer.parseInt(String.valueOf(cbNam.getSelectedItem()));
-                    for (int i = 0; i <= (nam == currentDate.getYear() ? currentDate.getMonthValue() : 12); i++)
+                    for (int i = 0; i <= (nam == currentDate.getYear() ? currentDate.getMonthValue() : 12); i++) {
                         cbThang.addItem(i == 0 ? "Tất cả" : String.format("Tháng %d", i));
+                    }
                 }
 
                 try {
@@ -149,7 +142,6 @@ public class ThongKeTab extends javax.swing.JPanel {
             }
         };
     }
-
 
     /**
      * Sự kiện khi chọn item combo box tháng
@@ -174,38 +166,29 @@ public class ThongKeTab extends javax.swing.JPanel {
      *
      * @return
      */
-    private ActionListener btnDangXuat_Click() {
-        return new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                
+    private void btnDangXuat_Click() {
 
-                // dialog xác nhận xoá
-                int reply = JOptionPane.showConfirmDialog(null, 
-                      " Bạn có muốn đăng xuất không", "Đăng xuất",
-                        JOptionPane.YES_NO_OPTION);
+        // dialog xác nhận xoá
+        int reply = JOptionPane.showConfirmDialog(null,
+                " Bạn có muốn đăng xuất không", "Đăng xuất",
+                JOptionPane.YES_NO_OPTION);
 
-                // nếu người dùng đồng ý
-                if (reply == JOptionPane.YES_OPTION) {
-                    
-                    
-                    try {
-                        
-                        System.exit(0);
-                    } catch (Exception ex) {
-                        Logger.getLogger(QuanLyNhanVienTab.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                }
-                
+        // nếu người dùng đồng ý
+        if (reply == JOptionPane.YES_OPTION) {
+
+            try {
+
+                System.exit(0);
+            } catch (Exception ex) {
+                Logger.getLogger(QuanLyNhanVienTab.class.getName()).log(Level.SEVERE, null, ex);
             }
-        };
+        }
+
     }
-    
-    
-    
+
     public ThongKeTab() throws Exception {
         initComponents();
-        
+
         try {
             danhSachChoThue = new DanhSachChoThue();
             danhSachMatHang = new DanhSachMatHang();
@@ -240,6 +223,7 @@ public class ThongKeTab extends javax.swing.JPanel {
         cbThang = new javax.swing.JComboBox<>();
         cbNam = new javax.swing.JComboBox<>();
         jLabel7 = new javax.swing.JLabel();
+        dangXuat = new javax.swing.JButton();
 
         tblHoaDon.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -350,6 +334,13 @@ public class ThongKeTab extends javax.swing.JPanel {
         jLabel7.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel7.setText("Mặt hàng chờ thanh toán");
 
+        dangXuat.setText("Đăng xuất");
+        dangXuat.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                dangXuatActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -360,18 +351,22 @@ public class ThongKeTab extends javax.swing.JPanel {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel7)
                         .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 1048, Short.MAX_VALUE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(dangXuat, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 1048, Short.MAX_VALUE))
                         .addGap(73, 73, 73))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap(54, Short.MAX_VALUE)
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(dangXuat))
                 .addGap(38, 38, 38)
                 .addComponent(jLabel7)
                 .addGap(18, 18, 18)
@@ -384,10 +379,16 @@ public class ThongKeTab extends javax.swing.JPanel {
         // TODO add your handling code here:
     }//GEN-LAST:event_txtDoanhThuActionPerformed
 
+    private void dangXuatActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dangXuatActionPerformed
+        // TODO add your handling code here:
+        this.btnDangXuat_Click();
+    }//GEN-LAST:event_dangXuatActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox<String> cbNam;
     private javax.swing.JComboBox<String> cbThang;
+    private javax.swing.JButton dangXuat;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

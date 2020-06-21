@@ -103,13 +103,14 @@ public class DanhSachChoThue {
      * @return
      * @throws Exception
      */
-    public boolean xoa(String maHoaDon) throws Exception {
+    public boolean traHang(String maHoaDon) throws Exception {
         HoaDon hoaDon = hoaDons.get(tim(maHoaDon));
 
-        if (hoaDon == null)
-            return false;
+        if (hoaDon == null){
+            System.out.println("Khong tim thay hoa don de tra");
+        }
 
-        return hoaDonDAO.xoaHoaDon(maHoaDon) && hoaDons.remove(hoaDon);
+        return hoaDonDAO.traHang(maHoaDon);
     }
 
 

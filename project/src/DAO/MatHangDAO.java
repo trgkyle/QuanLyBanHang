@@ -91,6 +91,8 @@ public class MatHangDAO {
             resultSet = dataBaseUtils.excuteQueryRead(sql);
 
             while (resultSet.next()) {
+                System.out.println("Lay duoc ma nha cung cap");
+                System.out.println(resultSet.getString("MANCC"));
                 matHang = new MatHang(
                         resultSet.getString("MAMH"),
                         resultSet.getString("TENMH"),
@@ -110,7 +112,8 @@ public class MatHangDAO {
         } finally {
             resultSet.close();
         }
-
+        System.out.println("xxxxxxx");
+        System.out.println(matHang.getTenNhaCungCap());
         return matHang;
     }
 

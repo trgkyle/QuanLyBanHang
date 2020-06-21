@@ -71,8 +71,15 @@ public class HoaDonDAO {
                         matHangHoaDonDAO.getMatHangs(resultSet.getString("MAHD")),
                         resultSet.getString("MAHD"),
                         khachHangDAO.getKhachHang(resultSet.getString("MAKH")),
-                        resultSet.getDate("NGAYLAP")
+                        resultSet.getDate("NGAYLAP"),
+                        resultSet.getInt("TINHTRANG")
                 );
+                System.out.println("Get ma nha cung cap");
+                System.out.println(hoaDon.getMatHang().get(0).getMaNhaCungCap());
+                System.out.println("Get ten nha cung cap");
+                System.out.println(hoaDon.getMatHang().get(0).getTenNhaCungCap());
+                System.out.println("Get tinh trang");
+                System.out.println(hoaDon.getTinhTrang());
                 hoaDons.add(hoaDon);
             }
         } catch (Exception e) {
@@ -274,33 +281,14 @@ public class HoaDonDAO {
      * @return
      * @throws Exception
      */
-    public boolean xoaHoaDon(String maHoaDon) throws Exception {
-        String sql = "DELETE FROM CHITIETHOADON WHERE MAHD = ?";
+    public boolean traHang(String maHoaDon) throws Exception {
+        final String sql = String.format("{call TRAHANG_HOADON(%s)}", maHoaDon);
         
         try {
-            preparedStatement = dataBaseUtils.excuteQueryWrite(sql);
-            
-            preparedStatement.setString(1, maHoaDon);
-            
-            if (preparedStatement.executeUpdate() > 0) {
-                sql = "DELETE FROM HOADON WHERE MAHD = ?";
-                
-                preparedStatement = DataBaseUtils.getInstance().excuteQueryWrite(sql);
-                
-                preparedStatement.setString(1, maHoaDon);
-                
-                if (preparedStatement.executeUpdate() > 0) {
-                    dataBaseUtils.commitQuery();
-                    return true;
-                }
-            }
+            dataBaseUtils.excuteProcedure(sql);
+            return true;
         } catch (Exception e) {
-            dataBaseUtils.rollbackQuery();
-            throw new Exception("Lỗi xoá hoá đơn");
-        } finally {
-            preparedStatement.close();
+            throw new Exception("Lỗi thanh toán hoá đơn");
         }
-        
-        return false;
     }
 }
