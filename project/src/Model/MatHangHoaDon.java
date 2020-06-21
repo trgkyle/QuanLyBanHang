@@ -13,7 +13,7 @@ import java.util.Objects;
  */
 public class MatHangHoaDon extends MatHang {
     private int soLuong;
-    private KhachHang khachHang;
+
     public int getSoLuong() {
         return soLuong;
     }
@@ -21,7 +21,7 @@ public class MatHangHoaDon extends MatHang {
     @Override
     public int hashCode() {
         int hash = 5;
-        hash = 41 * hash + Objects.hashCode(this.khachHang);
+        hash = 41 * hash + Objects.hashCode(this.getTenMatHang());
         return hash;
     }
 
@@ -37,7 +37,7 @@ public class MatHangHoaDon extends MatHang {
             return false;
         }
         final MatHangHoaDon other = (MatHangHoaDon) obj;
-        if (!Objects.equals(this.khachHang, other.khachHang)) {
+        if (!Objects.equals(this.getTenMatHang(), other.getTenMatHang())) {
             return false;
         }
         return true;
@@ -45,18 +45,21 @@ public class MatHangHoaDon extends MatHang {
 
     @Override
     public String toString() {
-        return "MatHangHoaDon{" + "soLuong=" + soLuong + ", khachHang=" + khachHang + '}';
+        return "MatHangHoaDon{" + "soLuong=" + soLuong + '}';
     }
 
-    public MatHangHoaDon(MatHang matHang, int soLuong, KhachHang khachHang) {
+
+
+    public MatHangHoaDon(MatHang matHang, int soLuong) {
         super(matHang.getMaMatHang(), matHang.getTenMatHang(), matHang.getSoLuongTon(),matHang.getDonGia());
         this.soLuong = soLuong;
-        this.khachHang = khachHang;
     }
-
-    public KhachHang getKhachHang() {
-        return khachHang;
+    
+    public MatHangHoaDon(String maMatHang, int soLuong) {
+        super(maMatHang);
+        this.soLuong = soLuong;
     }
+    
     
     public void setSoLuong(int soLuong) {
         this.soLuong = soLuong;

@@ -20,7 +20,7 @@ public class MuaBanTableModel extends AbstractTableModel {
     private ArrayList<HoaDon> hoaDons;
 
     private final String[] columnNames = new String[]{
-            "Mã hoá đơn", "Tên khách hàng", "Tên mặt hàng", "Số lượng", "Ngày mua", "Thành tiền", "Tình trạng"
+            "Mã hoá đơn", "Tên khách hàng", "Số lượng", "Ngày mua", "Thành tiền", "Tình trạng"
     };
 
     public void setModel(ArrayList<HoaDon> hoaDons) {
@@ -57,16 +57,14 @@ public class MuaBanTableModel extends AbstractTableModel {
                 case 1:
                     return hoaDon.getKhachHang().getHoTen();
                 case 2:
-                    return hoaDon.getMatHang().getTenMatHang();
+                    return hoaDon.tinhTongSoLuong();
                 case 3:
-                    return hoaDon.getSoLuong();
-                case 4:
                     return Formats.DATE_FORMAT.format(hoaDon.getNgayLap());
-                case 5:
+                case 4:
                     Locale locale = new Locale("vi", "VN");
                     NumberFormat numberFormat = NumberFormat.getCurrencyInstance(locale);
                     return numberFormat.format(hoaDon.thanhTien());
-                case 6:
+                case 5:
                     return hoaDon.isTinhTrang() == 1 ? "Đã thanh toán" : hoaDon.isTinhTrang() == 0 ? "Chưa thanh toán": "Trả hàng";
             }
         } catch (Exception e) {

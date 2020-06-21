@@ -112,11 +112,11 @@ public class HoaDonBanDialog extends javax.swing.JDialog {
         }
 
         if (isChinhSua) {
-            cbMaMatHang.addItem(String.format("[%s] %s",
-                    hoaDon.getMatHang().getMaMatHang(), hoaDon.getMatHang().getTenMatHang()));
-
-            cbMaMatHang.setSelectedItem(String.format("[%s] %s",
-                    hoaDon.getMatHang().getMaMatHang(), hoaDon.getMatHang().getTenMatHang()));
+//            cbMaMatHang.addItem(String.format("[%s] %s",
+//                    hoaDon.getMatHang().getMaMatHang(), hoaDon.getMatHang().getTenMatHang()));
+//
+//            cbMaMatHang.setSelectedItem(String.format("[%s] %s",
+//                    hoaDon.getMatHang().getMaMatHang(), hoaDon.getMatHang().getTenMatHang()));
         }
 
         if (isChinhSua) {
@@ -127,7 +127,7 @@ public class HoaDonBanDialog extends javax.swing.JDialog {
 
         //set the soLuong
         if (isChinhSua) {
-            txtSoLuong.setText(String.valueOf(hoaDon.getSoLuong()));
+//            txtSoLuong.setText(String.valueOf(hoaDon.getSoLuong()));
         }
 
     }
@@ -140,6 +140,8 @@ public class HoaDonBanDialog extends javax.swing.JDialog {
             System.out.println("Reload2");
             this.tableGioHang.setModel(muaHangHoaDonTableModel);
             System.out.println("Reload3");
+            
+            if(this.gioHang.size() > 0) this.btnLuu.setEnabled(true);
         }
     }
 
@@ -182,7 +184,7 @@ public class HoaDonBanDialog extends javax.swing.JDialog {
      * @return
      */
     private void btnThoat_Click() {
-        hoaDon = null;
+        this.hoaDon = null;
         HoaDonBanDialog.this.dispose();
     }
 
@@ -216,22 +218,22 @@ public class HoaDonBanDialog extends javax.swing.JDialog {
 
         // tạo thông tin hoá đơn
         hoaDon = new HoaDon(
-                matHang,
-                Integer.parseInt(txtSoLuong.getText().trim()),
+                this.gioHang,
                 txtMaHoaDon.getText().trim(),
                 khachHang,
                 Date.valueOf(Formats.DATE_FORMAT_SQL.format(dateChooser.getDate()))
         );
+        System.out.println("Gio hang");
+        System.out.println(this.gioHang.size());
+        this.hoaDon = hoaDon;
 
-        System.out.println(hoaDon);
 
         // đóng dialog
-        dispose();
+        HoaDonBanDialog.this.dispose();
     }
 
     private void btnThemGioHang_Click() {
         MatHang matHang = null;
-        KhachHang khachHang = null;
         Pattern pattern = null;
         Matcher matcher = null;
 
@@ -243,15 +245,7 @@ public class HoaDonBanDialog extends javax.swing.JDialog {
             matHang = danhSachMatHang.getAll().get(danhSachMatHang.tim(matcher.group(1)));
         }
 
-        // lấy dữ liệu khách hàng
-        pattern = Pattern.compile("(KH\\d.*)]", Pattern.MULTILINE);
-        matcher = pattern.matcher(cbMaKhachHang.getSelectedItem().toString());
-
-        if (matcher.find()) {
-            khachHang = danhSachKhachHang.getAll().get(danhSachKhachHang.tim(matcher.group(1)));
-        }
-
-        MatHangHoaDon matHangHoaDon = new MatHangHoaDon(matHang, Integer.parseInt(this.txtSoLuong.getText()), khachHang);
+        MatHangHoaDon matHangHoaDon = new MatHangHoaDon(matHang, Integer.parseInt(this.txtSoLuong.getText()));
         System.out.println(matHangHoaDon.toString());
         boolean replace = false;
         for (int i = 0; i < this.gioHang.size(); i++) {
@@ -265,7 +259,7 @@ public class HoaDonBanDialog extends javax.swing.JDialog {
             this.gioHang.add(matHangHoaDon);
         }
         System.out.println("add data to array list");
-
+        
         this.refresh(true);
     }
 
@@ -370,6 +364,7 @@ public class HoaDonBanDialog extends javax.swing.JDialog {
 
         btnLuu.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         btnLuu.setText("Tạo hóa đơn");
+        btnLuu.setEnabled(false);
         btnLuu.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnLuuActionPerformed(evt);
@@ -499,22 +494,21 @@ public class HoaDonBanDialog extends javax.swing.JDialog {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap(173, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(jLabel6)
-                        .addGap(284, 284, 284))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addContainerGap(173, Short.MAX_VALUE))))
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap(173, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel6)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(34, Short.MAX_VALUE)
+                .addGap(34, 34, 34)
                 .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap(54, Short.MAX_VALUE))
+                .addGap(54, 54, 54))
         );
 
         pack();

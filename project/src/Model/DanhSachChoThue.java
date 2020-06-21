@@ -86,7 +86,10 @@ public class DanhSachChoThue {
      */
     public boolean them(HoaDon hoaDon) throws Exception {
         if (hoaDon == null || hoaDons.contains(hoaDon))
+        {
+            System.out.println("Khong them hoa don");
             return false;
+        }
 
         return hoaDons.add(hoaDonDAO.themHoaDon(hoaDon));
     }
@@ -173,7 +176,7 @@ public class DanhSachChoThue {
 
         for (HoaDon hoaDon : hoaDons)
             if (hoaDon.isTinhTrang() == 1)
-                tong += hoaDon.getSoLuong();
+                tong += hoaDon.tinhTongSoLuong();
 
         return tong;
     }

@@ -5,14 +5,15 @@
  */
 package Model;
 
+import java.util.ArrayList;
+
 /**
  *
  * @author quang
  */
 public class ChiTietHoaDon {
-    private MatHang matHang;
+    private ArrayList<MatHangHoaDon> matHang;
    // private int soNgayDuocMuon;
-    private int soLuong;
     private int tinhTrang;  // true: đã trả, false: đang thuê
     
     public int isTinhTrang() {
@@ -23,48 +24,34 @@ public class ChiTietHoaDon {
         this.tinhTrang = tinhTrang;
     }
 
-    public MatHang getMatHang() {
+    public ArrayList<MatHangHoaDon> getMatHang() {
         return matHang;
     }
 
-    public void setMatHang(MatHang matHang) {
+    public void setMatHang(ArrayList<MatHangHoaDon> matHang) {
         this.matHang = matHang;
-    }
-
-
-
-    public int getSoLuong() {
-        return soLuong;
-    }
-
-    public void setSoLuong(int soLuong) {
-        this.soLuong = soLuong;
     }
 
     public ChiTietHoaDon() {
     }
 
-    public ChiTietHoaDon(MatHang matHang, int soLuong) {
+    public ChiTietHoaDon(ArrayList<MatHangHoaDon> matHang) {
         this.matHang = matHang;
        
-        this.soLuong = soLuong;
         this.tinhTrang = 0;
     }
 
-    public ChiTietHoaDon(MatHang matHang, int soLuong, int tinhTrang) {
+    public ChiTietHoaDon(ArrayList<MatHangHoaDon> matHang, int tinhTrang) {
         this.matHang = matHang;
        
-        this.soLuong = soLuong;
         this.tinhTrang = tinhTrang;
     }
 
     @Override
     public String toString() {
-        return "ChiTietHoaDon{" +
-                "MatHang=" + matHang +
-               
-                ", soLuong=" + soLuong +
-                ", tinhTrang=" + tinhTrang +
-                '}';
+        return "ChiTietHoaDon{" + "matHang=" + matHang + ", tinhTrang=" + tinhTrang + '}';
     }
+
+
+   
 }

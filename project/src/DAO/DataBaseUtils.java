@@ -22,6 +22,7 @@ public class DataBaseUtils {
     
     
     private DataBaseUtils() throws Exception {
+        System.out.println("Hi");
         _connection = getConnection();
         _connection.setAutoCommit(false);
     }

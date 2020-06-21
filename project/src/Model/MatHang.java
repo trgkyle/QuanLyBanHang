@@ -20,9 +20,15 @@ public class MatHang {
     private String ghiChu;
     private Double donGia;
     private int soLuongTon;
+    private String tenNhaCungCap;
+    
 
     public int getSoLuongTon() {
         return soLuongTon;
+    }
+
+    public String getTenNhaCungCap() {
+        return tenNhaCungCap;
     }
 
     public void setSoLuongTon(int soLuongTon) {
@@ -87,6 +93,10 @@ public class MatHang {
 
     public MatHang() {
     }
+    
+    public MatHang(String maMatHang) {
+        this.maMatHang = maMatHang;
+    }
 
     
     public MatHang(String maMatHang, String tenMatHang, int soLuongTon) {
@@ -111,6 +121,18 @@ public class MatHang {
         this.ghiChu = ghiChu;
         this.donGia = donGia;
         this.soLuongTon = soLuongTon;
+    }
+    
+    public MatHang(String maMatHang, String tenMatHang,String tenNhacc, String theLoai, boolean tinhTrang, String hangSanXuat, String ghiChu, Double donGia, int soLuongTon) {
+        this.maMatHang = maMatHang;
+        this.tenMatHang = tenMatHang;
+        this.theLoai = theLoai;
+        this.tinhTrang = tinhTrang;
+        this.hangSanXuat = hangSanXuat;
+        this.ghiChu = ghiChu;
+        this.donGia = donGia;
+        this.soLuongTon = soLuongTon;
+        this.tenNhaCungCap = tenNhacc;
     }
 
     @Override

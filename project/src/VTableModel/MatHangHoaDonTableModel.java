@@ -60,7 +60,7 @@ public class MatHangHoaDonTableModel extends AbstractTableModel {
             case 0:
                 return matHang.getTenMatHang();
             case 1:
-                return matHang.getKhachHang().getHoTen();
+                return matHang.getTenNhaCungCap();
             case 2:
                 return matHang.getSoLuong();
         }

@@ -30,7 +30,7 @@ public class KhachHangDAO {
      *
      * @throws Exception
      */
-    private KhachHangDAO() throws Exception {
+    public KhachHangDAO() throws Exception {
         dataBaseUtils = DataBaseUtils.getInstance();
         thongTinCaNhanDAO = ThongTinCaNhanDAO.getInstance();
     }
@@ -66,9 +66,11 @@ public class KhachHangDAO {
         String sql = String.format("SELECT * FROM VIEW_THONGTINKHACHHANG WHERE MAKH = '%s'", maKhachHang);
 
         try {
+            System.out.println("Try in khach hang");
             resultSet = dataBaseUtils.excuteQueryRead(sql);
+            System.out.println("Try in khach hang end");
             resultSet.next();
-
+            System.out.println("Try in khach hang next ok");
             khachHang = new KhachHang(
                     resultSet.getString("CMND"),
                     resultSet.getString("HOTEN"),
@@ -85,7 +87,7 @@ public class KhachHangDAO {
         } finally {
             resultSet.close();
         }
-
+        System.out.println("Lay khach hang ok");
         return khachHang;
     }
 
@@ -122,7 +124,7 @@ public class KhachHangDAO {
         } finally {
             resultSet.close();
         }
-
+        System.out.println("Tra ve thong tin khach hang");
         return khachHangs;
     }
 

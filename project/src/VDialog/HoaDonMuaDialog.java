@@ -12,6 +12,7 @@ import Model.DanhSachNhaCungCap;
 import Model.HoaDon;
 import Model.KhachHang;
 import Model.MatHang;
+import Model.MatHangHoaDon;
 import Model.NhaCungCap;
 import Utils.Formats;
 import Utils.PatternRegexs;
@@ -68,11 +69,11 @@ public class HoaDonMuaDialog extends javax.swing.JDialog {
         }
 
         if (isChinhSua) {
-            cbMaMatHang.addItem(String.format("[%s] %s",
-                    hoaDon.getMatHang().getMaMatHang(), hoaDon.getMatHang().getTenMatHang()));
-
-            cbMaMatHang.setSelectedItem(String.format("[%s] %s",
-                    hoaDon.getMatHang().getMaMatHang(), hoaDon.getMatHang().getTenMatHang()));
+//            cbMaMatHang.addItem(String.format("[%s] %s",
+//                    hoaDon.getMatHang().getMaMatHang(), hoaDon.getMatHang().getTenMatHang()));
+//
+//            cbMaMatHang.setSelectedItem(String.format("[%s] %s",
+//                    hoaDon.getMatHang().getMaMatHang(), hoaDon.getMatHang().getTenMatHang()));
         }
 
         if (isChinhSua) {
@@ -83,7 +84,7 @@ public class HoaDonMuaDialog extends javax.swing.JDialog {
 
         //set the soLuong
         if (isChinhSua) {
-            txtSoLuong.setText(String.valueOf(hoaDon.getSoLuong()));
+//            txtSoLuong.setText(String.valueOf(hoaDon.getSoLuong()));
         }
 
     }
@@ -162,8 +163,7 @@ public class HoaDonMuaDialog extends javax.swing.JDialog {
 //                } ????
         // tạo thông tin hoá đơn sau khi đóng tab sẽ móc dữ liệu
         hoaDon = new HoaDon(
-                matHang,
-                Integer.parseInt(txtSoLuong.getText().trim()),
+                null,
                 txtMaHoaDon.getText().trim(),
                 khachHang,
                 Date.valueOf(Formats.DATE_FORMAT_SQL.format(dateChooser.getDate()))

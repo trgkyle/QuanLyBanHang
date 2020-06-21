@@ -16,13 +16,13 @@ import java.util.ArrayList;
  * @author quang
  */
 public class MatHangDAO {
+
     private static MatHangDAO _instance;
     private static DataBaseUtils dataBaseUtils;
 
     public MatHangDAO() throws Exception {
         dataBaseUtils = DataBaseUtils.getInstance();
     }
-
 
     /**
      * Design Pattern: Singleton
@@ -41,7 +41,6 @@ public class MatHangDAO {
         return _instance;
     }
 
-
     /**
      * Đọc danh sách mặt hàng từ DB
      *
@@ -51,13 +50,12 @@ public class MatHangDAO {
     public ArrayList<MatHang> getMatHangs() throws Exception {
         ArrayList<MatHang> matHangs = new ArrayList<MatHang>();
         ResultSet resultSet = null;
-
         final String sql = "SELECT * FROM MATHANG";
 
         try {
             resultSet = dataBaseUtils.excuteQueryRead(sql);
-
             while (resultSet.next()) {
+                System.out.println(resultSet.getString("MAMH"));
                 MatHang matHang = new MatHang(
                         resultSet.getString("MAMH"),
                         resultSet.getString("TENMH"),
@@ -77,11 +75,45 @@ public class MatHangDAO {
         } finally {
             resultSet.close();
         }
+        System.out.println("Return mat hang");
 
         return matHangs;
     }
-    
-    
+
+    public MatHang getMatHangsByMMH(String maMatHang) throws Exception {
+        MatHang matHang = null;
+        ResultSet resultSet = null;
+
+//        final String sql = "SELECT * FROM MATHANG";
+        String sql = String.format("SELECT * FROM VIEW_THONGTINMATHANG WHERE MAMH = '%s'", maMatHang);
+
+        try {
+            resultSet = dataBaseUtils.excuteQueryRead(sql);
+
+            while (resultSet.next()) {
+                matHang = new MatHang(
+                        resultSet.getString("MAMH"),
+                        resultSet.getString("TENMH"),
+                        resultSet.getString("TENNCC"),
+                        resultSet.getString("THELOAI"),
+                        resultSet.getBoolean("TINHTRANG"),
+                        resultSet.getString("MANCC"),
+                        resultSet.getString("GHICHU"),
+                        resultSet.getDouble("DONGIA"),
+                        resultSet.getInt("SOLUONGTON")
+                );
+
+            }
+
+        } catch (Exception e) {
+            throw new Exception("Đọc danh sách mặt hàng lỗi");
+        } finally {
+            resultSet.close();
+        }
+
+        return matHang;
+    }
+
     public ArrayList<MatHang> getMatHangDeXoa() throws Exception {
         ArrayList<MatHang> matHangs = new ArrayList<MatHang>();
         ResultSet resultSet = null;
@@ -109,10 +141,6 @@ public class MatHangDAO {
 
         return matHangs;
     }
-    
-    
-    
-
 
     /**
      * Lấy mặt hàng từ DB
@@ -145,10 +173,8 @@ public class MatHangDAO {
         return matHang;
     }
 
-
     /**
-     * Lấy mã mặt hàng cuối trong DB
-     * Dùng để generate mã mặt hàng mới
+     * Lấy mã mặt hàng cuối trong DB Dùng để generate mã mặt hàng mới
      *
      * @return
      * @throws Exception
@@ -172,7 +198,6 @@ public class MatHangDAO {
         return ketQua;
     }
 
-
     /**
      * Thêm mặt hàng mới vào DB
      *
@@ -183,10 +208,10 @@ public class MatHangDAO {
     public MatHang themMatHang(MatHang matHang) throws Exception {
         String sql = "INSERT INTO MATHANG (MAMH, TENMH, MANCC, GHICHU, DONGIA, TINHTRANG, THELOAI, SOLUONGTON) VALUES (?,?,?,?,?,?,?,?)";
         PreparedStatement preparedStatement = null;
-        
 
-        if (matHang == null)
+        if (matHang == null) {
             return null;
+        }
 
         try {
             preparedStatement = dataBaseUtils.excuteQueryWrite(sql);
@@ -214,7 +239,6 @@ public class MatHangDAO {
         return null;
     }
 
-
     /**
      * Xoá mặt hàng trong DB
      *
@@ -226,8 +250,9 @@ public class MatHangDAO {
         String sql = "DELETE FROM MATHANG WHERE MAMH = ?";
         PreparedStatement preparedStatement = null;
 
-        if (getMatHang(maMatHang) == null)
+        if (getMatHang(maMatHang) == null) {
             return false;
+        }
 
         try {
             preparedStatement = dataBaseUtils.excuteQueryWrite(sql);
@@ -248,7 +273,6 @@ public class MatHangDAO {
         return false;
     }
 
-
     /**
      * Cập nhật thông tin mặt hàng trong DB
      *
@@ -257,13 +281,14 @@ public class MatHangDAO {
      * @throws Exception
      */
     public MatHang suaMatHang(MatHang matHang) throws Exception {
-        String sql = "UPDATE MATHANG SET " +
-                "TENMH = ?, MANCC = ?, GHICHU = ?, DONGIA = ?, " +
-                "TINHTRANG = ?, THELOAI = ?, SOLUONGTON = ? WHERE MAMH = ?";
+        String sql = "UPDATE MATHANG SET "
+                + "TENMH = ?, MANCC = ?, GHICHU = ?, DONGIA = ?, "
+                + "TINHTRANG = ?, THELOAI = ?, SOLUONGTON = ? WHERE MAMH = ?";
         PreparedStatement preparedStatement = null;
 
-        if (matHang == null)
+        if (matHang == null) {
             return null;
+        }
 
         try {
             preparedStatement = dataBaseUtils.excuteQueryWrite(sql);

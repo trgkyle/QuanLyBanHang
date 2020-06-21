@@ -9,6 +9,7 @@ import Model.DanhSachChoThue;
 import Model.DanhSachKhachHang;
 import Model.DanhSachMatHang;
 import Model.HoaDon;
+import Model.MatHangHoaDon;
 import VDialog.HoaDonBanDialog;
 import VDialog.HoaDonMuaDialog;
 import VDialog.ThanhToanDialog;
@@ -19,6 +20,7 @@ import java.awt.event.ActionListener;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.RowFilter;
+import javax.swing.SwingConstants;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.table.TableModel;
@@ -78,20 +80,24 @@ public class QuanLyMuaBan extends javax.swing.JPanel {
      * @param soLuongCu
      * @return
      */
-    private boolean kiemTraTinhTrangThue(HoaDon hoaDon, int soLuongCu) {
+    private boolean kiemTraTinhTrang(HoaDon hoaDon, int soLuongCu) {
+        if(soLuongCu == -1 ) return true;
         // kiểm tra số lượng đặt có đủ không
-        if ((hoaDon.getMatHang().getSoLuongTon() + soLuongCu) < hoaDon.getSoLuong()) {
+        int soLuongTon = soLuongCu;
+        for(MatHangHoaDon matHangHoaDon : hoaDon.getMatHang()){
+            soLuongTon = matHangHoaDon.getSoLuongTon();
+            // kiểm tra mặt hàng
+            if (matHangHoaDon.isTinhTrang()) {
+                JOptionPane.showMessageDialog(rootComponent, "Mặt Hàng không còn sử dụng được");
+                return false;
+            }
+        }
+        if (soLuongTon < hoaDon.tinhTongSoLuong()) {
             JOptionPane.showMessageDialog(rootComponent, "Không đủ số lượng");
             return false;
         }
 
-        // kiểm tra mặt hàng
-        if (!hoaDon.getMatHang().isTinhTrang()) {
-            JOptionPane.showMessageDialog(rootComponent, "Mặt Hàng không còn sử dụng được");
-
-            return false;
-        }
-
+        
         return true;
     }
 
@@ -264,7 +270,8 @@ public class QuanLyMuaBan extends javax.swing.JPanel {
 
         // kiểm tra tình trạng mua và thêm vào DB
         try {
-            if (hoaDon != null && kiemTraTinhTrangThue(hoaDon, 0)) {
+            if (hoaDon != null && kiemTraTinhTrang(hoaDon, 0)) {
+                System.out.println("Go them hoa don");
                 danhSachMuaBan.them(hoaDon);
                 refresh(true);
             }
@@ -284,18 +291,23 @@ public class QuanLyMuaBan extends javax.swing.JPanel {
         try {
             hoaDonBanDialog = new HoaDonBanDialog(new JFrame(), null);
         } catch (Exception ex) {
+            System.out.println("Error 1");
             JOptionPane.showMessageDialog(rootComponent, ex);
         }
         // lấy hoá đơn nhập trong dialog
         HoaDon hoaDon = hoaDonBanDialog.getHoaDon();
-
+        System.out.println(hoaDonBanDialog.getHoaDon().toString());
+        System.out.println("Lay size gio hang");
+        System.out.println(hoaDon.getMatHang().size());
         // kiểm tra tình trạng mua và thêm vào DB
         try {
-            if (hoaDon != null && kiemTraTinhTrangThue(hoaDon, 0)) {
+            if (hoaDon != null && kiemTraTinhTrang(hoaDon, -1)) {
+                System.out.println("Go go go");
                 danhSachMuaBan.them(hoaDon);
                 refresh(true);
             }
         } catch (Exception e1) {
+            System.out.println("Error 2");
             JOptionPane.showMessageDialog(rootComponent, e1);
         }
     }
@@ -318,7 +330,8 @@ public class QuanLyMuaBan extends javax.swing.JPanel {
 
         // lấy thông tin hoá đơn
         HoaDon hoaDon = danhSachMuaBan.getAll().get(getCurrentSelected());
-        int soLuongCu = hoaDon.getSoLuong();
+//        int soLuongCu = hoaDon.getSoLuong();
+        int soLuongCu = 0;
 
         // hiện dialog sửa và thông tin sản phẩm
         HoaDonMuaDialog choThueDialog = null;
@@ -333,7 +346,7 @@ public class QuanLyMuaBan extends javax.swing.JPanel {
 
         // kiểm tra hoá đơn có rỗng không và tình trạng thuê
         try {
-            if (hoaDon != null && kiemTraTinhTrangThue(hoaDon, soLuongCu)) {
+            if (hoaDon != null && kiemTraTinhTrang(hoaDon, soLuongCu)) {
                 danhSachMuaBan.sua(hoaDon);
                 refresh(true);
             }
@@ -386,46 +399,78 @@ public class QuanLyMuaBan extends javax.swing.JPanel {
      * @return
      */
     private void btnThanhToan_Click() {
+        
         // nếu người dùng chưa chọn dòng nào thì thông báo
         if (getCurrentSelected() == -1) {
-            JOptionPane.showMessageDialog(rootComponent, "Vui lòng chọn hoá đơn cần thanh toán");
-            return;
-        } else if (String.valueOf(tblHoaDon.getModel().getValueAt(getCurrentSelected(), 6)).equalsIgnoreCase("Đã thanh toán")) {
-            JOptionPane.showMessageDialog(rootComponent, "Hoá đơn đã thanh toán");
+            JOptionPane.showMessageDialog(rootComponent, "Vui lòng chọn hoá đơn cần trả");
             return;
         }
 
-        // lấy thông tin hoá đơn cần thanh toán
+        // lấy thông tin hoá đơn cần trả
         String maHoaDon = muaBanTableModel.getValueAt(getCurrentSelected(), 0).toString();
         String tenKhachHang = muaBanTableModel.getValueAt(getCurrentSelected(), 1).toString();
         String tenMatHang = muaBanTableModel.getValueAt(getCurrentSelected(), 2).toString();
-        int soLuong = Integer.parseInt(muaBanTableModel.getValueAt(getCurrentSelected(), 3).toString());
 
-        ThanhToanDialog thanhToanDialog = new ThanhToanDialog(
-                new JFrame(),
-                tenKhachHang,
-                tenMatHang,
-                soLuong
-        );
+        // hiện dialog xác nhận
+        int reply = JOptionPane.showConfirmDialog(null,
+                "Thanh toán \nHóa đơn " + maHoaDon + "\nTên khách hàng: " + tenKhachHang + "\nTên mặt hàng: " + tenMatHang,
+                "Thanh toán", JOptionPane.YES_NO_OPTION);
 
-        if (thanhToanDialog.getKetQua() == 0) {
+        // nếu người dùng đồng ý
+        if (reply == JOptionPane.YES_OPTION) {
             try {
-                danhSachMuaBan.thanhToanHoaDon(maHoaDon);
-                refresh(true);
-            } catch (Exception e1) {
-                JOptionPane.showMessageDialog(rootComponent, e1);
-            }
-        } else if (thanhToanDialog.getKetQua() > 0) {
-            try {
-                HoaDon hoaDon = danhSachMuaBan.getAll().get(danhSachMuaBan.tim(maHoaDon));
-                hoaDon.setSoLuong(thanhToanDialog.getKetQua());
-
+                // update trang thai hoa don
+                HoaDon hoaDon = danhSachMuaBan.getAll().get(getCurrentSelected());
+                // return to stock
+                hoaDon.setTinhTrang(1);
                 danhSachMuaBan.sua(hoaDon);
+                tblHoaDon.clearSelection();
                 refresh(true);
             } catch (Exception e1) {
                 JOptionPane.showMessageDialog(rootComponent, e1);
             }
         }
+        
+        // nếu người dùng chưa chọn dòng nào thì thông báo
+//        if (getCurrentSelected() == -1) {
+//            JOptionPane.showMessageDialog(rootComponent, "Vui lòng chọn hoá đơn cần thanh toán");
+//            return;
+//        } else if (String.valueOf(tblHoaDon.getModel().getValueAt(getCurrentSelected(), 6)).equalsIgnoreCase("Đã thanh toán")) {
+//            JOptionPane.showMessageDialog(rootComponent, "Hoá đơn đã thanh toán");
+//            return;
+//        }
+//
+//        // lấy thông tin hoá đơn cần thanh toán
+//        String maHoaDon = muaBanTableModel.getValueAt(getCurrentSelected(), 0).toString();
+//        String tenKhachHang = muaBanTableModel.getValueAt(getCurrentSelected(), 1).toString();
+//        String tenMatHang = muaBanTableModel.getValueAt(getCurrentSelected(), 2).toString();
+//        int soLuong = Integer.parseInt(muaBanTableModel.getValueAt(getCurrentSelected(), 3).toString());
+//
+//        ThanhToanDialog thanhToanDialog = new ThanhToanDialog(
+//                new JFrame(),
+//                tenKhachHang,
+//                tenMatHang,
+//                soLuong
+//        );
+//
+//        if (thanhToanDialog.getKetQua() == 0) {
+//            try {
+//                danhSachMuaBan.thanhToanHoaDon(maHoaDon);
+//                refresh(true);
+//            } catch (Exception e1) {
+//                JOptionPane.showMessageDialog(rootComponent, e1);
+//            }
+//        } else if (thanhToanDialog.getKetQua() > 0) {
+//            try {
+//                HoaDon hoaDon = danhSachMuaBan.getAll().get(danhSachMuaBan.tim(maHoaDon));
+////                hoaDon.setSoLuong(thanhToanDialog.getKetQua());
+//
+//                danhSachMuaBan.sua(hoaDon);
+//                refresh(true);
+//            } catch (Exception e1) {
+//                JOptionPane.showMessageDialog(rootComponent, e1);
+//            }
+//        }
     }
 
     /**
@@ -554,13 +599,13 @@ public class QuanLyMuaBan extends javax.swing.JPanel {
 
         tblHoaDon.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null}
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null}
             },
             new String [] {
-                "Mã hóa đơn", "Tên khách hàng", "Tên mặt hàng", "Số lượng", "Ngày mua", "Thành tiền", "Tình trạng"
+                "Mã hóa đơn", "Tên khách hàng", "Số lượng", "Ngày mua", "Thành tiền", "Tình trạng"
             }
         ));
         tblHoaDon.addMouseListener(new java.awt.event.MouseAdapter() {
