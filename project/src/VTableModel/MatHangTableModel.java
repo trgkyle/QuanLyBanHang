@@ -19,7 +19,7 @@ public class MatHangTableModel extends AbstractTableModel{
     private ArrayList<MatHang> matHangs;
 
     private final String[] columnNames = new String[]{
-            "Mã mặt hàng", "Tên mặt hàng", "Thể loại", "Tình trạng", "Đơn giá", "Số lượng tồn", "Hãng sản xuất", "Ghi chú"
+            "Mã mặt hàng", "Tên mặt hàng", "Thể loại", "Tình trạng", "Đơn giá", "Số lượng tồn", "Mã Nhà Cung Cấp", "Ghi chú"
     };
 
     public void setModel(ArrayList<MatHang> matHangs) {
@@ -75,7 +75,7 @@ public class MatHangTableModel extends AbstractTableModel{
             case 5:
                 return matHang.getSoLuongTon();
             case 6:
-                return matHang.getHangSanXuat();
+                return matHang.getMaNhaCungCap();
             case 7:
                 return matHang.getGhiChu();
         }

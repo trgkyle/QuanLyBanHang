@@ -41,9 +41,9 @@ public class DataBaseUtils {
     }
     public static Connection getConnection(){
         Connection connection = null;
-        String url = "jdbc:sqlserver://localhost:1433;databasename=QUANLYBANHANGVERSION1";
-        String user = "user";
-        String password = "user";
+        String url = "jdbc:sqlserver://localhost:1433;databasename=QUANLYBANHANGVERSION2";
+        String user = "sa";
+        String password = "Quang1999.";
         try {
             connection = DriverManager.getConnection(url, user, password);
         } catch (Exception e) {e.printStackTrace();}
@@ -107,26 +107,6 @@ public class DataBaseUtils {
 
 
     /**
-     * reset DB về trạng thái ban đầu
-     *
-     * @return
-     * @throws Exception
-     */
-    public boolean resetDatabase() throws Exception {
-        final String sql = "{call RESET_DATABASE}";
-
-        try (CallableStatement stmt = _connection.prepareCall(sql)) {
-            stmt.execute();
-            commitQuery();
-            return true;
-        } catch (SQLException e) {
-            rollbackQuery();
-            throw new Exception("Lỗi reset database");
-        }
-    }
-
-
-    /**
      * thực thi hàm, thủ tục trong sql
      *
      * @param sql
@@ -143,6 +123,4 @@ public class DataBaseUtils {
             throw new Exception("Lỗi reset database");
         }
     }
-    
-    
 }

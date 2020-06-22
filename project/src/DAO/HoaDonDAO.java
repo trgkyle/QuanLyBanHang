@@ -79,7 +79,7 @@ public class HoaDonDAO {
                 System.out.println("Get ten nha cung cap");
                 System.out.println(hoaDon.getMatHang().get(0).getTenNhaCungCap());
                 System.out.println("Get tinh trang");
-                System.out.println(hoaDon.getTinhTrang());
+                System.out.println(hoaDon.isTinhTrang());
                 hoaDons.add(hoaDon);
             }
         } catch (Exception e) {
@@ -155,54 +155,7 @@ public class HoaDonDAO {
         return ketQua;
     }
 
-    /**
-     * Cập nhật thông tin hoá đơn vào DB
-     *
-     * @param hoaDon
-     * @return
-     * @throws Exception
-     */
-    public HoaDon suaHoaDon(HoaDon hoaDon) throws Exception {
-        String sql = "UPDATE CHITIETHOADON SET "
-                + "MAMH = ?, SOLUONG = ?, TINHTRANG = ? WHERE MAHD = ?";
-        
-        try {
-            preparedStatement = dataBaseUtils.excuteQueryWrite(sql);
-            
-            for (MatHangHoaDon matHangHoaDon : hoaDon.getMatHang()) {
-                preparedStatement = dataBaseUtils.excuteQueryWrite(sql);
-                
-                preparedStatement.setString(1, matHangHoaDon.getMaMatHang());
-                preparedStatement.setInt(2, matHangHoaDon.getSoLuong());
-                preparedStatement.setInt(3, hoaDon.isTinhTrang());
-                preparedStatement.setString(4, hoaDon.getMaHoaDon());
-                if (preparedStatement.executeUpdate() <= 0) {
-                    System.out.println("Loi thuc thi chi tiet hoa don");
-                }
-            }
-            
-            if (preparedStatement.executeUpdate() > 0) {
-                sql = "UPDATE HOADON SET NGAYLAP = ? WHERE MAHD = ?";
-                preparedStatement = dataBaseUtils.excuteQueryWrite(sql);
-                
-                preparedStatement.setDate(1, hoaDon.getNgayLap());
-                preparedStatement.setString(2, hoaDon.getMaHoaDon());
-                
-                if (preparedStatement.executeUpdate() > 0) {
-                    dataBaseUtils.commitQuery();
-                    return getHoaDon(hoaDon.getMaHoaDon());
-                }
-            }
-        } catch (Exception e) {
-            dataBaseUtils.rollbackQuery();
-            throw new Exception("Lỗi cập nhật thông tin hoá đơn");
-        } finally {
-            preparedStatement.close();
-        }
-        
-        return null;
-    }
-
+    
     /**
      * Thêm hoá đơn mới vào DB
      *
@@ -219,11 +172,11 @@ public class HoaDonDAO {
             preparedStatement.setString(1, hoaDon.getMaHoaDon());
             preparedStatement.setDate(2, hoaDon.getNgayLap());
             preparedStatement.setString(3, hoaDon.getKhachHang().getMaKH());
-            preparedStatement.setString(4, Integer.toString(hoaDon.getTinhTrang()));
+            preparedStatement.setString(4, Integer.toString(hoaDon.isTinhTrang()));
             
             if (preparedStatement.executeUpdate() > 0) {
                 dataBaseUtils.commitQuery();
-                sql = "INSERT INTO CHITIETHOADON (MAHD, MAMH, TENMH, SOLUONG, TINHTRANG) VALUES ( ?, ?, ?, ?, ?)";
+                sql = "INSERT INTO CHITIETHOADON (MAHD, MAMH, TENMH, SOLUONG ) VALUES ( ?, ?, ?, ?)";
                 System.out.println(hoaDon.getMatHang().size());
                 for (MatHangHoaDon matHangHoaDon : hoaDon.getMatHang()) {
                     System.out.println(matHangHoaDon.toString());
@@ -232,7 +185,7 @@ public class HoaDonDAO {
                     preparedStatement.setString(2, matHangHoaDon.getMaMatHang());
                     preparedStatement.setString(3, matHangHoaDon.getTenMatHang());
                     preparedStatement.setInt(4, matHangHoaDon.getSoLuong());
-                    preparedStatement.setInt(5, hoaDon.isTinhTrang());
+                   
                     if (preparedStatement.executeUpdate() <= 0) {
                         System.out.println("Loi thuc thi tao chi tiet hoa don");
                         dataBaseUtils.rollbackQuery();

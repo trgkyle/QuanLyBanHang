@@ -221,7 +221,7 @@ public class MatHangDAO {
 
             preparedStatement.setString(1, matHang.getMaMatHang());
             preparedStatement.setString(2, matHang.getTenMatHang());
-            preparedStatement.setString(3, matHang.getHangSanXuat());
+            preparedStatement.setString(3, matHang.getMaNhaCungCap());
             preparedStatement.setString(4, matHang.getGhiChu());
             preparedStatement.setDouble(5, matHang.getDonGia());
             preparedStatement.setBoolean(6, matHang.isTinhTrang());
@@ -297,7 +297,7 @@ public class MatHangDAO {
             preparedStatement = dataBaseUtils.excuteQueryWrite(sql);
 
             preparedStatement.setString(1, matHang.getTenMatHang());
-            preparedStatement.setString(2, matHang.getHangSanXuat());
+            preparedStatement.setString(2, matHang.getMaNhaCungCap());
             preparedStatement.setString(3, matHang.getGhiChu());
             preparedStatement.setDouble(4, matHang.getDonGia());
             preparedStatement.setBoolean(5, matHang.isTinhTrang());

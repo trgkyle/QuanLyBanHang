@@ -22,21 +22,14 @@ public class HoaDon extends ChiTietHoaDon {
     private KhachHang khachHang;
     private Date ngayLap;
     private int tinhTrang;
-    private String MaKhachHang;
+    private HoaDonDAO hoaDonDAO;
 
-    public void setMaKhachHang(String MaKhachHang) {
-        this.MaKhachHang = MaKhachHang;
-    }
-
-    public String getMaKhachHang() {
-        return MaKhachHang;
-    }
 
     public void setTinhTrang(int tinhTrang) {
         this.tinhTrang = tinhTrang;
     }
 
-    public int getTinhTrang() {
+    public int isTinhTrang() {
         return tinhTrang;
     }
 
@@ -82,28 +75,28 @@ public class HoaDon extends ChiTietHoaDon {
         return tongTien;
     }
 
-    public HoaDon() {
+    public HoaDon() throws Exception {
+        hoaDonDAO = HoaDonDAO.getInstance();
+    }
+    
+    public HoaDon getHoaDonByMaHoaDon(String maHoaDon) throws Exception{
+        HoaDon hd = hoaDonDAO.getHoaDon(maHoaDon);
+        return hd;
     }
 
     public HoaDon(ArrayList<MatHangHoaDon> matHang, String maHoaDon, KhachHang khachHang, Date ngayLap) {
-        super(matHang, 0);
+        super(matHang);
         this.maHoaDon = maHoaDon;
         this.khachHang = khachHang;
         this.ngayLap = ngayLap;
     }
 
     public HoaDon(ArrayList<MatHangHoaDon> matHang, String maHoaDon, KhachHang khachHang, Date ngayLap, int tinhTrang) {
-        super(matHang, tinhTrang);
+        super(matHang);
         this.maHoaDon = maHoaDon;
         this.khachHang = khachHang;
         this.ngayLap = ngayLap;
         this.tinhTrang = tinhTrang;
-    }
-
-    public HoaDon(ArrayList<MatHangHoaDon> matHang, int soLuong, String maHoaDon, KhachHang khachHang) {
-        super(matHang, soLuong);
-        this.maHoaDon = maHoaDon;
-        this.khachHang = khachHang;
     }
 
     @Override

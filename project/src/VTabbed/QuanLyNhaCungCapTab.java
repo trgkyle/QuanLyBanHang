@@ -10,6 +10,7 @@ import Model.NhaCungCap;
 import VDialog.NhaCungCapDialog;
 import VTableModel.NhaCungCapTableModel;
 import java.awt.Component;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.logging.Level;
@@ -19,6 +20,7 @@ import javax.swing.JOptionPane;
 import javax.swing.RowFilter;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+import javax.swing.table.JTableHeader;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 
@@ -48,6 +50,11 @@ public class QuanLyNhaCungCapTab extends javax.swing.JPanel {
         tblNhaCungCap.setRowSorter(sorter);
         txtTimKiem.getDocument().addDocumentListener(txtTimKiem_DocumentListerner());
         cbFilterTimKiem.addActionListener(cbFilterTimKiem_Changed());
+        
+        JTableHeader jtableHeader = tblNhaCungCap.getTableHeader();
+        Font headerFont = new Font("Verdana", Font.PLAIN, 20);
+        jtableHeader.setFont(headerFont);
+        
         refresh(true);
     }
     
@@ -160,6 +167,7 @@ public class QuanLyNhaCungCapTab extends javax.swing.JPanel {
          } catch (Exception ex) {
              Logger.getLogger(QuanLyNhaCungCapTab.class.getName()).log(Level.SEVERE, null, ex);
          }
+         setSize(1400, 750);
     }
 
      
@@ -238,7 +246,9 @@ public class QuanLyNhaCungCapTab extends javax.swing.JPanel {
         tblNhaCungCap = new javax.swing.JTable();
         cbFilterTimKiem = new javax.swing.JComboBox<>();
         txtTimKiem = new javax.swing.JTextField();
+        jLabel1 = new javax.swing.JLabel();
 
+        btnThem.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         btnThem.setText("Thêm");
         btnThem.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -246,6 +256,7 @@ public class QuanLyNhaCungCapTab extends javax.swing.JPanel {
             }
         });
 
+        btnSua.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         btnSua.setText("Sửa");
         btnSua.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -253,6 +264,7 @@ public class QuanLyNhaCungCapTab extends javax.swing.JPanel {
             }
         });
 
+        btnXoa.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         btnXoa.setText("Xóa");
         btnXoa.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -260,6 +272,7 @@ public class QuanLyNhaCungCapTab extends javax.swing.JPanel {
             }
         });
 
+        tblNhaCungCap.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         tblNhaCungCap.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
@@ -271,9 +284,16 @@ public class QuanLyNhaCungCapTab extends javax.swing.JPanel {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
+        tblNhaCungCap.setRowHeight(22);
         jScrollPane1.setViewportView(tblNhaCungCap);
 
+        cbFilterTimKiem.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         cbFilterTimKiem.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Mã NCC ", "Tên NCC ", "Địa chỉ ", "Số điện thoại" }));
+
+        txtTimKiem.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+
+        jLabel1.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jLabel1.setText("Tìm Kiếm");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -286,7 +306,9 @@ public class QuanLyNhaCungCapTab extends javax.swing.JPanel {
                 .addComponent(btnSua, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(40, 40, 40)
                 .addComponent(btnXoa, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 356, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 241, Short.MAX_VALUE)
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(27, 27, 27)
                 .addComponent(txtTimKiem, javax.swing.GroupLayout.PREFERRED_SIZE, 191, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(cbFilterTimKiem, javax.swing.GroupLayout.PREFERRED_SIZE, 212, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -296,16 +318,17 @@ public class QuanLyNhaCungCapTab extends javax.swing.JPanel {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(25, 25, 25)
+                .addGap(60, 60, 60)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnThem)
                     .addComponent(btnSua)
                     .addComponent(btnXoa)
                     .addComponent(cbFilterTimKiem, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtTimKiem, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtTimKiem, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel1))
                 .addGap(74, 74, 74)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 246, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(312, Short.MAX_VALUE))
+                .addGap(60, 60, 60))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -400,6 +423,7 @@ public class QuanLyNhaCungCapTab extends javax.swing.JPanel {
     private javax.swing.JButton btnThem;
     private javax.swing.JButton btnXoa;
     private javax.swing.JComboBox<String> cbFilterTimKiem;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable tblNhaCungCap;
     private javax.swing.JTextField txtTimKiem;

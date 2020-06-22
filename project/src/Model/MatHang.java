@@ -16,7 +16,7 @@ public class MatHang {
     private String tenMatHang;
     private String theLoai;
     private boolean tinhTrang;
-    private String hangSanXuat;
+    
     private String ghiChu;
     private Double donGia;
     private int soLuongTon;
@@ -67,13 +67,7 @@ public class MatHang {
         this.tinhTrang = tinhTrang;
     }
 
-    public String getHangSanXuat() {
-        return hangSanXuat;
-    }
-
-    public void setHangSanXuat(String hangSanXuat) {
-        this.hangSanXuat = hangSanXuat;
-    }
+    
 
     public String getGhiChu() {
         return ghiChu;
@@ -116,36 +110,36 @@ public class MatHang {
         this.donGia = donGia;
     }
 
-    public MatHang(String maMatHang, String tenMatHang, String theLoai, boolean tinhTrang, String hangSanXuat, String ghiChu, Double donGia, int soLuongTon) {
+    public MatHang(String maMatHang, String tenMatHang, String theLoai, boolean tinhTrang, String maNhaCungCap, String ghiChu, Double donGia, int soLuongTon) {
         this.maMatHang = maMatHang;
         this.tenMatHang = tenMatHang;
         this.theLoai = theLoai;
         this.tinhTrang = tinhTrang;
-        this.hangSanXuat = hangSanXuat;
+        this.maNhaCungCap = maNhaCungCap;
         this.ghiChu = ghiChu;
         this.donGia = donGia;
         this.soLuongTon = soLuongTon;
     }
     
-    public MatHang(String maMatHang, String tenMatHang,String tenNhacc, String theLoai, boolean tinhTrang, String hangSanXuat, String ghiChu, Double donGia, int soLuongTon) {
+    public MatHang(String maMatHang, String tenMatHang,String tenNhacc, String theLoai, boolean tinhTrang, String maNhaCungCap, String ghiChu, Double donGia, int soLuongTon) {
         this.maMatHang = maMatHang;
         this.tenMatHang = tenMatHang;
         this.theLoai = theLoai;
         this.tinhTrang = tinhTrang;
-        this.hangSanXuat = hangSanXuat;
+        this.maNhaCungCap = maNhaCungCap;
         this.ghiChu = ghiChu;
         this.donGia = donGia;
         this.soLuongTon = soLuongTon;
         this.tenNhaCungCap = tenNhacc;
     }
     
-    public MatHang(String maMatHang,String maNhaCungCap, String tenMatHang,String tenNhacc, String theLoai, boolean tinhTrang, String hangSanXuat, String ghiChu, Double donGia, int soLuongTon) {
+    public MatHang(String maMatHang,String maNhaCungCap, String tenMatHang,String tenNhacc, String theLoai, boolean tinhTrang,  String ghiChu, Double donGia, int soLuongTon) {
         this.maNhaCungCap = maNhaCungCap;
         this.maMatHang = maMatHang;
         this.tenMatHang = tenMatHang;
         this.theLoai = theLoai;
         this.tinhTrang = tinhTrang;
-        this.hangSanXuat = hangSanXuat;
+        //this.hangSanXuat = hangSanXuat;
         this.ghiChu = ghiChu;
         this.donGia = donGia;
         this.soLuongTon = soLuongTon;
@@ -172,7 +166,7 @@ public class MatHang {
                 ", tenMatHang='" + tenMatHang + '\'' +
                 ", theLoai='" + theLoai + '\'' +
                 ", tinhTrang=" + tinhTrang +
-                ", hangSanXuat='" + hangSanXuat + '\'' +
+                ", hangSanXuat='" + maNhaCungCap + '\'' +
                 ", ghiChu='" + ghiChu + '\'' +
                 ", donGia=" + donGia +
                 ", soLuongTon=" + soLuongTon +

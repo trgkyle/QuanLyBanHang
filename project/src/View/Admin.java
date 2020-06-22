@@ -25,7 +25,7 @@ public class Admin extends JFrame {
     
     private QuanLyKhachHangTab quanLyKhachHangTab;
     private QuanLyMatHangTab quanLyMatHangTab;
-    private QuanLyMuaBan quanLyChoThueTab;
+    private QuanLyMuaBan quanLyMuaBanTab;
     private QuanLyNhanVienTab quanLyNhanVienTab;
     private ThongKeTab thongKeTabbed;
     private QuanLyNhaCungCapTab quanLyNhaCungCapTab;
@@ -35,14 +35,14 @@ public class Admin extends JFrame {
             TabKhachHang.add("Quản Lý Khách Hàng",quanLyKhachHangTab = new QuanLyKhachHangTab());
             TabKhachHang.add("Quản Lý Nhà Cung Cấp",quanLyNhaCungCapTab = new QuanLyNhaCungCapTab());
             TabKhachHang.add("Quản Lý Mặt Hàng",quanLyMatHangTab = new QuanLyMatHangTab());
-            TabKhachHang.add("Quản Lý Mua Bán",quanLyChoThueTab = new QuanLyMuaBan());
+            TabKhachHang.add("Quản Lý Mua Bán",quanLyMuaBanTab = new QuanLyMuaBan());
             TabKhachHang.add("Quản Lý Nhân Viên",quanLyNhanVienTab = new QuanLyNhanVienTab());
             TabKhachHang.addTab("Thống kê", thongKeTabbed = new ThongKeTab());
         }
         else{
             TabKhachHang.add("Quản Lý Khách Hàng",quanLyKhachHangTab = new QuanLyKhachHangTab());
             TabKhachHang.add("Quản Lý Mặt Hàng",quanLyMatHangTab = new QuanLyMatHangTab());
-            TabKhachHang.add("Quản Lý Mua Bán",quanLyChoThueTab = new QuanLyMuaBan());
+            TabKhachHang.add("Quản Lý Mua Bán",quanLyMuaBanTab = new QuanLyMuaBan());
             TabKhachHang.addTab("Thống kê", thongKeTabbed = new ThongKeTab());
         }
         
@@ -63,7 +63,7 @@ public class Admin extends JFrame {
                     quanLyKhachHangTab.refresh(true);
                     quanLyNhaCungCapTab.refresh(true);
                     quanLyMatHangTab.refresh(true);
-                    quanLyChoThueTab.refresh(true);
+                    quanLyMuaBanTab.refresh(true);
                     quanLyNhanVienTab.refresh(true);
                     thongKeTabbed.refresh();
 
@@ -90,7 +90,7 @@ public class Admin extends JFrame {
         
          prepareUI();
          setLocationRelativeTo(null);
-        
+        setSize(1400, 750);
        
     }
 
@@ -106,6 +106,8 @@ public class Admin extends JFrame {
         TabKhachHang = new javax.swing.JTabbedPane();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+
+        TabKhachHang.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);

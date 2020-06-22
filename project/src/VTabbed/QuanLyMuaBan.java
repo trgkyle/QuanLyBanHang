@@ -5,16 +5,18 @@
  */
 package VTabbed;
 
-import Model.DanhSachChoThue;
+
 import Model.DanhSachKhachHang;
 import Model.DanhSachMatHang;
+import Model.DanhSachMuaBan;
 import Model.HoaDon;
 import Model.MatHangHoaDon;
 import VDialog.HoaDonBanDialog;
-import VDialog.HoaDonMuaDialog;
-import VDialog.ThanhToanDialog;
+
+
 import VTableModel.MuaBanTableModel;
 import java.awt.Component;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JFrame;
@@ -23,6 +25,7 @@ import javax.swing.RowFilter;
 import javax.swing.SwingConstants;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+import javax.swing.table.JTableHeader;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 
@@ -33,11 +36,11 @@ import javax.swing.table.TableRowSorter;
 public class QuanLyMuaBan extends javax.swing.JPanel {
 
     /**
-     * Creates new form QuanLyChoThueTab
+     * Creates new form DanhSachMuaBan
      */
     private DanhSachMatHang danhSachMatHang;
     private DanhSachKhachHang danhSachKhachHang;
-    private DanhSachChoThue danhSachMuaBan;
+    private DanhSachMuaBan danhSachMuaBan;
     private final Component rootComponent = this;
 
     private int indexFilter = 0;
@@ -63,6 +66,11 @@ public class QuanLyMuaBan extends javax.swing.JPanel {
         tblHoaDon.setModel(muaBanTableModel);
         tblHoaDon.setRowSorter(sorter);
 
+        JTableHeader jtableHeader = tblHoaDon.getTableHeader();
+        Font headerFont = new Font("Verdana", Font.PLAIN, 20);
+        jtableHeader.setFont(headerFont);
+        
+        
         refresh(true);
     }
 
@@ -97,11 +105,15 @@ public class QuanLyMuaBan extends javax.swing.JPanel {
 
     private void validateActionButtonHoaDon() {
         if (getCurrentSelected() != -1) {
+            btnThanhToan.setEnabled(true);
+            btnTraHang.setEnabled(true);
             HoaDon hoaDon = danhSachMuaBan.getAll().get(getCurrentSelected());
             System.out.println(hoaDon.isTinhTrang());
             if (hoaDon.isTinhTrang() == -1) {
                 btnThanhToan.setEnabled(false);
                 btnTraHang.setEnabled(false);
+            } else if(hoaDon.isTinhTrang() == 1){
+                btnThanhToan.setEnabled(false);
             } else {
                 btnThanhToan.setEnabled(true);
                 btnTraHang.setEnabled(true);
@@ -171,6 +183,8 @@ public class QuanLyMuaBan extends javax.swing.JPanel {
             tblHoaDon.revalidate();
             tblHoaDon.repaint();
             setCurrentSelected(oldSelected);
+            
+            this.validateActionButtonHoaDon();
         }
         /**
          * Bật tắt nút thêm hoá đơn Khi chưa có người dùng và mặt hàng thì k
@@ -222,33 +236,7 @@ public class QuanLyMuaBan extends javax.swing.JPanel {
         }
     }
 
-    /**
-     * Sự kiện button thêm hóa đơn mua
-     *
-     * @return
-     */
-    private void btnThemHoaDonMua() {
-        // hiện dialog thêm hoá đơn
-        HoaDonMuaDialog hoaDonMuaDialog = null;
-        try {
-            hoaDonMuaDialog = new HoaDonMuaDialog(new JFrame(), null);
-        } catch (Exception ex) {
-            JOptionPane.showMessageDialog(rootComponent, ex);
-        }
-        // lấy hoá đơn nhập trong dialog
-        HoaDon hoaDon = hoaDonMuaDialog.getHoaDon();
-
-        // kiểm tra tình trạng mua và thêm vào DB
-        try {
-            if (hoaDon != null && kiemTraTinhTrang(hoaDon, 0)) {
-                System.out.println("Go them hoa don");
-                danhSachMuaBan.them(hoaDon);
-                refresh(true);
-            }
-        } catch (Exception e1) {
-            JOptionPane.showMessageDialog(rootComponent, e1);
-        }
-    }
+    
 
     /**
      * Sự kiện button thêm hóa đơn bán
@@ -277,52 +265,38 @@ public class QuanLyMuaBan extends javax.swing.JPanel {
             JOptionPane.showMessageDialog(rootComponent, e1);
         }
     }
-
-    /**
-     * Sự kiện button sửa
-     *
-     * @return
-     */
-    private void btnSua_Click() {
-        // nếu người dùng chưa chọn dòng nào thì thông báo
-        if (getCurrentSelected() == -1) {
-            JOptionPane.showMessageDialog(rootComponent, "Vui lòng chọn hoá đơn cần sửa");
-
-            return;
-        } else if (String.valueOf(tblHoaDon.getModel().getValueAt(getCurrentSelected(), 6)).equalsIgnoreCase("Đã thanh toán")) {
-            JOptionPane.showMessageDialog(rootComponent, "Không thể sửa hoá đơn đã thanh toán");
-            return;
-        }
-
-        // lấy thông tin hoá đơn
-        HoaDon hoaDon = danhSachMuaBan.getAll().get(getCurrentSelected());
-//        int soLuongCu = hoaDon.getSoLuong();
-        int soLuongCu = 0;
-
-        // hiện dialog sửa và thông tin sản phẩm
-        HoaDonMuaDialog choThueDialog = null;
+    
+    private void thongTinHoaDon(){
+        
+        int selected = tblHoaDon.getSelectedRow();
+        if(selected == -1) return;
+        HoaDon detailHoaDon = danhSachMuaBan.getAll().get(selected);
+        // hiện dialog thêm hoá đơn
+        HoaDonBanDialog hoaDonBanDialog = null;
         try {
-            choThueDialog = new HoaDonMuaDialog(new JFrame(), hoaDon);
+            hoaDonBanDialog = new HoaDonBanDialog(new JFrame(), detailHoaDon);
         } catch (Exception ex) {
+            System.out.println("Error 1");
             JOptionPane.showMessageDialog(rootComponent, ex);
         }
-
-        // lấy thông tin hoá đơn đã sửa
-        hoaDon = choThueDialog.getHoaDon();
-
-        // kiểm tra hoá đơn có rỗng không và tình trạng thuê
+        // lấy hoá đơn nhập trong dialog
+        HoaDon hoaDon = hoaDonBanDialog.getHoaDon();
+        // kiểm tra tình trạng mua và thêm vào DB
         try {
-            if (hoaDon != null && kiemTraTinhTrang(hoaDon, soLuongCu)) {
-                danhSachMuaBan.sua(hoaDon);
+            if (hoaDon != null && kiemTraTinhTrang(hoaDon, -1)) {
+                danhSachMuaBan.them(hoaDon);
                 refresh(true);
             }
         } catch (Exception e1) {
+            System.out.println("Error 2");
             JOptionPane.showMessageDialog(rootComponent, e1);
         }
     }
+    
+    
 
     /**
-     * Sự kiện button xoá
+     * Sự kiện button trả hàng
      *
      * @return
      */
@@ -432,12 +406,6 @@ public class QuanLyMuaBan extends javax.swing.JPanel {
             public void actionPerformed(ActionEvent e) {
                 String filter_text = String.valueOf(cbFilter.getSelectedItem());
 
-                /**
-                 * Nếu người dùng chọn tất cả thì hiện tất cả hoá đơn trong bảng
-                 * Nếu người dùng chọn Đang thuê thì chỉ hiện hoá đơn đang thuê
-                 * Nếu người dùng chọn Đã thanh toán thì chỉ hiện hoá đơn đã
-                 * thanh toán
-                 */
                 if (filter_text.equalsIgnoreCase("Tất cả")) //Tất cả
                 {
                     sorter.setRowFilter(null);
@@ -446,7 +414,7 @@ public class QuanLyMuaBan extends javax.swing.JPanel {
                         RowFilter<Object, Object> filter = new RowFilter<Object, Object>() {
                             @Override
                             public boolean include(Entry<?, ?> entry) {
-                                return (entry.getStringValue(6).contains(filter_text));
+                                return (entry.getStringValue(5).contains(filter_text));
                             }
                         };
                         sorter.setRowFilter(filter);
@@ -485,7 +453,7 @@ public class QuanLyMuaBan extends javax.swing.JPanel {
         initComponents();
 
         try {
-            danhSachMuaBan = new DanhSachChoThue();
+            danhSachMuaBan = new DanhSachMuaBan();
             danhSachKhachHang = new DanhSachKhachHang();
             danhSachMatHang = new DanhSachMatHang();
         } catch (Exception e) {
@@ -493,6 +461,7 @@ public class QuanLyMuaBan extends javax.swing.JPanel {
         }
 
         prepareUI();
+        setSize(1400, 750);
 
     }
 
@@ -517,6 +486,7 @@ public class QuanLyMuaBan extends javax.swing.JPanel {
         txtTimKiem = new javax.swing.JTextField();
         cbFilterTimKiem = new javax.swing.JComboBox<>();
 
+        tblHoaDon.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         tblHoaDon.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null, null},
@@ -528,13 +498,18 @@ public class QuanLyMuaBan extends javax.swing.JPanel {
                 "Mã hóa đơn", "Tên khách hàng", "Số lượng", "Ngày mua", "Thành tiền", "Tình trạng"
             }
         ));
+        tblHoaDon.setRowHeight(22);
         tblHoaDon.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 tblHoaDonMouseClicked(evt);
             }
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                tblHoaDonMouseReleased(evt);
+            }
         });
         jScrollPane1.setViewportView(tblHoaDon);
 
+        jButton1.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jButton1.setText("Tạo hóa đơn xuất kho");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -542,6 +517,7 @@ public class QuanLyMuaBan extends javax.swing.JPanel {
             }
         });
 
+        btnTraHang.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         btnTraHang.setText("Trả hàng");
         btnTraHang.setEnabled(false);
         btnTraHang.addActionListener(new java.awt.event.ActionListener() {
@@ -550,6 +526,7 @@ public class QuanLyMuaBan extends javax.swing.JPanel {
             }
         });
 
+        btnThanhToan.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         btnThanhToan.setText("Thanh Toán");
         btnThanhToan.setEnabled(false);
         btnThanhToan.addActionListener(new java.awt.event.ActionListener() {
@@ -558,12 +535,18 @@ public class QuanLyMuaBan extends javax.swing.JPanel {
             }
         });
 
+        jLabel1.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel1.setText("Tìm kiếm");
 
+        jLabel2.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel2.setText("Tình trạng");
 
+        cbFilter.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         cbFilter.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Tất cả", "Đã thanh toán", "Chưa thanh toán" }));
 
+        txtTimKiem.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+
+        cbFilterTimKiem.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         cbFilterTimKiem.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Mã Hóa Đơn", "Tên Khách Hàng", "Tên Mặt Hàng" }));
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -577,21 +560,20 @@ public class QuanLyMuaBan extends javax.swing.JPanel {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(btnTraHang)
+                                .addComponent(btnTraHang, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(btnThanhToan))
+                                .addComponent(btnThanhToan, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addGap(185, 185, 185)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 117, Short.MAX_VALUE)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel2))
-                        .addGap(18, 18, 18)
+                            .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(32, 32, 32)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(txtTimKiem, javax.swing.GroupLayout.DEFAULT_SIZE, 102, Short.MAX_VALUE)
-                            .addComponent(cbFilter, 0, 1, Short.MAX_VALUE))
-                        .addGap(18, 18, 18)
-                        .addComponent(cbFilterTimKiem, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 72, Short.MAX_VALUE)))
+                            .addComponent(cbFilter, javax.swing.GroupLayout.PREFERRED_SIZE, 127, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtTimKiem))
+                        .addGap(21, 21, 21)
+                        .addComponent(cbFilterTimKiem, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -627,9 +609,9 @@ public class QuanLyMuaBan extends javax.swing.JPanel {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(23, 23, 23)
+                .addGap(60, 60, 60)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(126, Short.MAX_VALUE))
+                .addContainerGap(60, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -653,6 +635,15 @@ public class QuanLyMuaBan extends javax.swing.JPanel {
         this.validateActionButtonHoaDon();
 
     }//GEN-LAST:event_tblHoaDonMouseClicked
+
+    private void tblHoaDonMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblHoaDonMouseReleased
+        // TODO add your handling code here:
+        if (evt.getClickCount() == 2) {
+            // your valueChanged overridden method 
+            this.thongTinHoaDon();
+        }
+        this.validateActionButtonHoaDon();
+    }//GEN-LAST:event_tblHoaDonMouseReleased
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

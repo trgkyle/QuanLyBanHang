@@ -14,16 +14,7 @@ import java.util.ArrayList;
 public class ChiTietHoaDon {
     private ArrayList<MatHangHoaDon> matHang;
    // private int soNgayDuocMuon;
-    private int tinhTrang;  // true: đã trả, false: đang thuê
     
-    public int isTinhTrang() {
-        return tinhTrang;
-    }
-
-    public void setTinhTrang(int tinhTrang) {
-        this.tinhTrang = tinhTrang;
-    }
-
     public ArrayList<MatHangHoaDon> getMatHang() {
         return matHang;
     }
@@ -38,18 +29,11 @@ public class ChiTietHoaDon {
     public ChiTietHoaDon(ArrayList<MatHangHoaDon> matHang) {
         this.matHang = matHang;
        
-        this.tinhTrang = 0;
-    }
-
-    public ChiTietHoaDon(ArrayList<MatHangHoaDon> matHang, int tinhTrang) {
-        this.matHang = matHang;
-       
-        this.tinhTrang = tinhTrang;
     }
 
     @Override
     public String toString() {
-        return "ChiTietHoaDon{" + "matHang=" + matHang + ", tinhTrang=" + tinhTrang + '}';
+        return "ChiTietHoaDon{" + "matHang=" + matHang + '}';
     }
 
 
